@@ -179,7 +179,7 @@
       .input-wrap {
         position: relative;
       }
-      .input-wrap svg {
+      .input-icon {
         position: absolute;
         left: 13px;
         top: 50%;
@@ -189,11 +189,12 @@
         color: var(--ink-ghost);
         pointer-events: none;
         transition: color 0.18s;
+        z-index: 1;
       }
       input[type="text"],
       input[type="password"] {
         width: 100%;
-        padding: 11px 14px 11px 38px;
+        padding: 11px 40px 11px 38px;
         font-family: "Space Grotesk", sans-serif;
         font-size: 14px;
         font-weight: 500;
@@ -213,11 +214,8 @@
         background: #fff;
         box-shadow: 0 0 0 3px var(--accent-glow);
       }
-      input[type="text"]:focus + svg,
-      input[type="password"]:focus + svg {
-        color: var(--accent);
-      }
-      .input-wrap:focus-within svg {
+      input[type="text"]:focus ~ .input-icon,
+      input[type="password"]:focus ~ .input-icon {
         color: var(--accent);
       }
 
@@ -230,18 +228,21 @@
         background: none;
         border: none;
         cursor: pointer;
-        padding: 2px;
+        padding: 4px;
         color: var(--ink-ghost);
         transition: color 0.18s;
         display: flex;
         align-items: center;
+        justify-content: center;
+        z-index: 2;
       }
       .toggle-pw:hover {
         color: var(--ink-mid);
       }
       .toggle-pw svg {
-        width: 15px;
-        height: 15px;
+        width: 16px;
+        height: 16px;
+        pointer-events: none;
       }
 
       /* ── ERROR ── */
@@ -489,7 +490,7 @@
       <div class="field">
         <label for="username">Username</label>
         <div class="input-wrap">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -510,7 +511,7 @@
       <div class="field">
         <label for="password">Password</label>
         <div class="input-wrap">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -528,7 +529,7 @@
             class="toggle-pw"
             type="button"
             id="togglePw"
-            title="Show/hide password"
+            aria-label="Toggle password visibility"
           >
             <svg
               id="eyeIcon"
@@ -537,12 +538,14 @@
               viewBox="0 0 24 24"
             >
               <path
+                id="eyePath1"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               />
               <path
+                id="eyePath2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
@@ -565,44 +568,54 @@
       </button>
 
       <div class="card-footer">
-        Driver Rating System &copy; 2025 &mdash; Authorized access only
+        Driver Rating System &copy; 2026 &mdash; Authorized access only
       </div>
     </div>
 
     <script>
-      // ── Credentials (hardcoded as requested) ──
+      // ── Credentials ──
       const VALID_USER = "@dmin";
       const VALID_PASS = "C@mbo@123";
-      // Target page after successful login
       const ADMIN_PAGE = "admin.html";
 
-      // Toggle password visibility
-      document
-        .getElementById("togglePw")
-        .addEventListener("click", function () {
-          const pw = document.getElementById("password");
-          const icon = document.getElementById("eyeIcon");
-          const isText = pw.type === "text";
-          pw.type = isText ? "password" : "text";
-          icon.innerHTML = isText
-            ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`
-            : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.64 6.638A9.955 9.955 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.966 9.966 0 01-4.176 5.187M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18"/>`;
-        });
+      // Fixed Password toggle
+      document.getElementById("togglePw").addEventListener("click", function () {
+        const pw = document.getElementById("password");
+        const icon = document.getElementById("eyeIcon");
+        
+        const isShowing = pw.type === "text";
+        pw.type = isShowing ? "password" : "text";
+
+        // Update SVG path based on state
+        if (isShowing) {
+          // Change to "Show Eye" icon (standard eye)
+          icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          `;
+        } else {
+          // Change to "Hide Eye" icon (eye with slash)
+          icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.64 6.638A9.955 9.955 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.966 9.966 0 01-4.176 5.187M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18" />
+          `;
+        }
+      });
 
       // Allow Enter key
       document.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") handleLogin();
+        if (e.key === "Enter") {
+          const activeEl = document.activeElement;
+          if (activeEl.id === "username" || activeEl.id === "password") {
+            handleLogin();
+          }
+        }
       });
 
       function showError(msg) {
         const el = document.getElementById("errorMsg");
         document.getElementById("errorText").textContent = msg;
         el.classList.remove("show");
-        void el.offsetWidth; // reflow to restart animation
+        void el.offsetWidth; // trigger reflow
         el.classList.add("show");
       }
 
@@ -623,12 +636,9 @@
 
         setLoading(true);
 
-        // Simulate a brief auth check
         setTimeout(function () {
           if (user === VALID_USER && pass === VALID_PASS) {
-            // Store session flag
             sessionStorage.setItem("admin_auth", "true");
-            // Show success overlay then redirect
             document.getElementById("successOverlay").classList.add("show");
             setTimeout(function () {
               window.location.href = ADMIN_PAGE;
