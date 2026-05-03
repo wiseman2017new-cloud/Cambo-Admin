@@ -935,6 +935,17 @@
             </svg>
             All Ratings
           </button>
+          <button class="nav-item" onclick="showPanel('report')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Report
+          </button>
         </nav>
 
         <div class="sidebar-footer">Connected to Supabase · v1.0</div>
@@ -1341,8 +1352,113 @@
               </div>
             </div>
           </div>
+
+          <!-- ── REPORT ── -->
+          <div class="panel" id="panel-report">
+            <!-- Filters Bar -->
+            <div class="card" style="margin-bottom: 20px">
+              <div class="card-header">
+                <div>
+                  <div class="section-title">Rating Log — Monthly Report</div>
+                  <div class="section-sub">
+                    Full breakdown of all rating responses per submission
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div
+                  class="form-row"
+                  style="align-items: flex-end; gap: 12px; flex-wrap: wrap"
+                >
+                  <div class="field" style="min-width: 160px">
+                    <label class="field-label">Month</label>
+                    <div class="select-wrap">
+                      <select id="reportMonthFilter" onchange="loadReport()">
+                        <option value="">All Months</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field" style="flex: 1; min-width: 200px">
+                    <label class="field-label">Search</label>
+                    <input
+                      type="text"
+                      id="reportSearch"
+                      placeholder="Search by username, driver, branch…"
+                      oninput="filterReportTable()"
+                    />
+                  </div>
+                  <button
+                    class="btn btn-primary"
+                    onclick="exportReportCSV()"
+                    style="flex-shrink: 0; margin-top: 6px"
+                  >
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      />
+                    </svg>
+                    Export CSV
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card ratings-table-wrap">
+              <div class="card-header">
+                <div>
+                  <div class="section-title">Rating Log</div>
+                  <div class="section-sub" id="reportCount">Loading…</div>
+                </div>
+              </div>
+              <div class="tbl-wrap" style="overflow-x: auto">
+                <table id="reportTable" style="min-width: 2400px">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Username</th>
+                      <th>Driver</th>
+                      <th>Branch</th>
+                      <th>Date</th>
+                      <th>Q1</th>
+                      <th>Noted Q1</th>
+                      <th>Q2</th>
+                      <th>Noted Q2</th>
+                      <th>Q3</th>
+                      <th>Noted Q3</th>
+                      <th>Q4</th>
+                      <th>Noted Q4</th>
+                      <th>Q5</th>
+                      <th>Noted Q5</th>
+                      <th>Q6</th>
+                      <th>Noted Q6</th>
+                      <th>Q7</th>
+                      <th>Noted Q7</th>
+                      <th>Q8</th>
+                      <th>Noted Q8</th>
+                      <th>Q9</th>
+                      <th>Noted Q9</th>
+                      <th>Q10</th>
+                      <th>Noted Q10</th>
+                      <th>Q11</th>
+                      <th>Noted Q11</th>
+                      <th>Q12</th>
+                      <th>Noted Q12</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reportTableBody">
+                    <tr>
+                      <td colspan="29"><div class="spinner"></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- /content -->
       </div>
       <!-- /main -->
     </div>
@@ -1460,6 +1576,7 @@
         ],
         branches: ["Branches", "Manage branch locations"],
         ratings: ["All Ratings", "Browse and filter all submitted ratings"],
+        report: ["Report", "Monthly rating log with full Q&A breakdown"],
       };
 
       function showPanel(name) {
@@ -1481,6 +1598,7 @@
         if (name === "questions") loadQuestionsPanel();
         if (name === "branches") loadBranchesPanel();
         if (name === "ratings") loadRatings();
+        if (name === "report") loadReport();
       }
 
       function openModal(id) {
@@ -1994,6 +2112,233 @@
         document.getElementById("questionBadge").textContent =
           allQuestions.length;
         document.getElementById("branchBadge").textContent = allBranches.length;
+      }
+
+      // ── REPORT ──
+      let reportData = []; // raw rows for CSV / filtering
+
+      async function loadReport() {
+        const tbody = document.getElementById("reportTableBody");
+        tbody.innerHTML =
+          '<tr><td colspan="29"><div class="spinner"></div></td></tr>';
+
+        // Fetch all ratings
+        const { data, error } = await db
+          .from("ratings")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          tbody.innerHTML =
+            '<tr class="empty-row"><td colspan="29">Failed to load data</td></tr>';
+          return;
+        }
+
+        // Populate month filter from available data
+        const monthSel = document.getElementById("reportMonthFilter");
+        const currentVal = monthSel.value;
+        const months = [
+          ...new Set(
+            (data || []).map((r) => {
+              const d = new Date(r.created_at);
+              return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+            }),
+          ),
+        ]
+          .sort()
+          .reverse();
+
+        // Rebuild month options preserving current selection
+        monthSel.innerHTML = '<option value="">All Months</option>';
+        months.forEach((m) => {
+          const [yr, mo] = m.split("-");
+          const label = new Date(yr, mo - 1).toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          });
+          const opt = document.createElement("option");
+          opt.value = m;
+          opt.textContent = label;
+          if (m === currentVal) opt.selected = true;
+          monthSel.appendChild(opt);
+        });
+
+        // Filter by selected month
+        const selMonth = monthSel.value;
+        const filtered = selMonth
+          ? (data || []).filter((r) => {
+              const d = new Date(r.created_at);
+              const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+              return key === selMonth;
+            })
+          : data || [];
+
+        const driverMap = Object.fromEntries(
+          allDrivers.map((d) => [d.id, d.name]),
+        );
+
+        reportData = filtered.map((r) => {
+          const resp = r.responses || {};
+          // Build Q1-Q12 answer + note arrays
+          const qs = allQuestions
+            .slice()
+            .sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
+          const row = {
+            timestamp: new Date(r.created_at).toLocaleString(),
+            username: r.submitted_by || "–",
+            driver: driverMap[r.driver_id] || "Unknown",
+            branch: r.branch || "–",
+            date: r.rating_date || "–",
+          };
+          for (let i = 0; i < 12; i++) {
+            const q = qs[i];
+            const ans = q ? resp[q.id] || {} : {};
+            row[`q${i + 1}`] = ans.answer ?? "–";
+            row[`note${i + 1}`] = ans.note || "";
+          }
+          return row;
+        });
+
+        renderReportTable(reportData);
+      }
+
+      function renderReportTable(rows) {
+        const tbody = document.getElementById("reportTableBody");
+        document.getElementById("reportCount").textContent =
+          `${rows.length} submission${rows.length !== 1 ? "s" : ""}`;
+
+        if (!rows.length) {
+          tbody.innerHTML =
+            '<tr class="empty-row"><td colspan="29">No records found</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = rows
+          .map((r) => {
+            let qCells = "";
+            for (let i = 1; i <= 12; i++) {
+              const ans = r[`q${i}`];
+              const note = r[`note${i}`] || "";
+              const bad = isBad(ans);
+              qCells += `<td><span class="badge-pill ${bad ? "badge-red" : ans === "–" ? "badge-gray" : "badge-green"}" style="white-space:nowrap">${ans}</span></td>`;
+              qCells += `<td style="font-size:11px;color:var(--ink-light);max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${note}">${note || "–"}</td>`;
+            }
+            return `<tr>
+            <td style="white-space:nowrap;font-size:12px;color:var(--ink-light)">${r.timestamp}</td>
+            <td class="td-primary" style="white-space:nowrap">${r.username}</td>
+            <td style="white-space:nowrap;font-weight:600">${r.driver}</td>
+            <td style="white-space:nowrap">${r.branch}</td>
+            <td style="white-space:nowrap">${r.date}</td>
+            ${qCells}
+          </tr>`;
+          })
+          .join("");
+      }
+
+      function filterReportTable() {
+        const q = document
+          .getElementById("reportSearch")
+          .value.toLowerCase()
+          .trim();
+        if (!q) {
+          renderReportTable(reportData);
+          return;
+        }
+        const filtered = reportData.filter(
+          (r) =>
+            r.username.toLowerCase().includes(q) ||
+            r.driver.toLowerCase().includes(q) ||
+            r.branch.toLowerCase().includes(q) ||
+            r.date.toLowerCase().includes(q),
+        );
+        renderReportTable(filtered);
+      }
+
+      function exportReportCSV() {
+        if (!reportData.length) {
+          alert("No data to export.");
+          return;
+        }
+        const headers = [
+          "Timestamp",
+          "Username",
+          "Driver",
+          "Branch",
+          "Date",
+          "Q1",
+          "Noted Q1",
+          "Q2",
+          "Noted Q2",
+          "Q3",
+          "Noted Q3",
+          "Q4",
+          "Noted Q4",
+          "Q5",
+          "Noted Q5",
+          "Q6",
+          "Noted Q6",
+          "Q7",
+          "Noted Q7",
+          "Q8",
+          "Noted Q8",
+          "Q9",
+          "Noted Q9",
+          "Q10",
+          "Noted Q10",
+          "Q11",
+          "Noted Q11",
+          "Q12",
+          "Noted Q12",
+        ];
+        const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+        const rows = reportData.map((r) =>
+          [
+            r.timestamp,
+            r.username,
+            r.driver,
+            r.branch,
+            r.date,
+            r.q1,
+            r.note1,
+            r.q2,
+            r.note2,
+            r.q3,
+            r.note3,
+            r.q4,
+            r.note4,
+            r.q5,
+            r.note5,
+            r.q6,
+            r.note6,
+            r.q7,
+            r.note7,
+            r.q8,
+            r.note8,
+            r.q9,
+            r.note9,
+            r.q10,
+            r.note10,
+            r.q11,
+            r.note11,
+            r.q12,
+            r.note12,
+          ]
+            .map(esc)
+            .join(","),
+        );
+
+        const csv = [headers.map(esc).join(","), ...rows].join("\r\n");
+        const blob = new Blob(["\uFEFF" + csv], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const selMonth =
+          document.getElementById("reportMonthFilter").value || "all";
+        a.href = url;
+        a.download = `rating-log-${selMonth}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
       }
 
       // Close modals on overlay click
