@@ -490,7 +490,12 @@
       <div class="field">
         <label for="username">Username</label>
         <div class="input-wrap">
-          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            class="input-icon"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -501,7 +506,7 @@
           <input
             type="text"
             id="username"
-            placeholder="@dmin"
+            placeholder="Admin"
             autocomplete="username"
           />
         </div>
@@ -511,7 +516,12 @@
       <div class="field">
         <label for="password">Password</label>
         <div class="input-wrap">
-          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            class="input-icon"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -574,32 +584,34 @@
 
     <script>
       // ── Credentials ──
-      const VALID_USER = "@dmin";
-      const VALID_PASS = "C@mbo@123";
+      const VALID_USER = "Admin";
+      const VALID_PASS = "C@mbo@2026";
       const ADMIN_PAGE = "admin.html";
 
       // Fixed Password toggle
-      document.getElementById("togglePw").addEventListener("click", function () {
-        const pw = document.getElementById("password");
-        const icon = document.getElementById("eyeIcon");
-        
-        const isShowing = pw.type === "text";
-        pw.type = isShowing ? "password" : "text";
+      document
+        .getElementById("togglePw")
+        .addEventListener("click", function () {
+          const pw = document.getElementById("password");
+          const icon = document.getElementById("eyeIcon");
 
-        // Update SVG path based on state
-        if (isShowing) {
-          // Change to "Show Eye" icon (standard eye)
-          icon.innerHTML = `
+          const isShowing = pw.type === "text";
+          pw.type = isShowing ? "password" : "text";
+
+          // Update SVG path based on state
+          if (isShowing) {
+            // Change to "Show Eye" icon (standard eye)
+            icon.innerHTML = `
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
           `;
-        } else {
-          // Change to "Hide Eye" icon (eye with slash)
-          icon.innerHTML = `
+          } else {
+            // Change to "Hide Eye" icon (eye with slash)
+            icon.innerHTML = `
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.64 6.638A9.955 9.955 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.966 9.966 0 01-4.176 5.187M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18" />
           `;
-        }
-      });
+          }
+        });
 
       // Allow Enter key
       document.addEventListener("keydown", function (e) {
