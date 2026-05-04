@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Driver Rating — Admin Login</title>
+    <title>Driver Rating — Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
@@ -429,6 +429,49 @@
         font-size: 12px;
         color: var(--ink-light);
       }
+
+      /* ── RESPONSIVE MINI APP ADAPTATIONS ── */
+      @media (max-width: 480px) {
+        body {
+          align-items: flex-start;
+          background: var(--card);
+          overflow-y: auto;
+        }
+
+        .login-card {
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          max-width: 100%;
+          padding: 40px 24px;
+          animation: none;
+        }
+
+        .logo-wrap {
+          margin-bottom: 40px;
+        }
+
+        .login-heading {
+          font-size: 28px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+          padding-top: 14px;
+          padding-bottom: 14px;
+          font-size: 16px; /* Prevents auto-zoom on iOS */
+        }
+
+        .btn-login {
+          padding: 16px;
+          margin-top: 12px;
+          font-size: 15px;
+        }
+
+        .card-footer {
+          margin-top: 48px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -445,8 +488,8 @@
             />
           </svg>
         </div>
-        <div class="success-title">Welcome back!</div>
-        <div class="success-sub">Redirecting to admin panel…</div>
+        <div class="success-title" id="successTitle">Welcome back!</div>
+        <div class="success-sub" id="successSub">Redirecting to panel…</div>
       </div>
     </div>
 
@@ -466,12 +509,12 @@
         </div>
         <div class="logo-text">
           <span class="logo-title">Driver Rating</span>
-          <span class="logo-sub">Admin Panel</span>
+          <span class="logo-sub">Portal</span>
         </div>
       </div>
 
       <h1 class="login-heading">Sign in</h1>
-      <p class="login-sub">Enter your credentials to access the dashboard.</p>
+      <p class="login-sub">Enter your credentials to access your dashboard.</p>
 
       <!-- Error message -->
       <div class="error-msg" id="errorMsg">
@@ -506,7 +549,7 @@
           <input
             type="text"
             id="username"
-            placeholder="Admin"
+            placeholder="Username"
             autocomplete="username"
           />
         </div>
@@ -574,7 +617,7 @@
         onclick="handleLogin()"
       >
         <div class="btn-spinner" id="btnSpinner"></div>
-        <span class="btn-label">Sign in to Admin</span>
+        <span class="btn-label" id="loginBtnLabel">Sign in</span>
       </button>
 
       <div class="card-footer">
@@ -587,6 +630,10 @@
       const VALID_USER = "Admin";
       const VALID_PASS = "Cambo@2026";
       const ADMIN_PAGE = "admin.html";
+
+      const DRIVER_USER = "Driver";
+      const DRIVER_PASS = "Driver@2026";
+      const DRIVER_PAGE = "driver.html";
 
       // Fixed Password toggle
       document
@@ -649,11 +696,29 @@
         setLoading(true);
 
         setTimeout(function () {
+          let redirectUrl = null;
+          let role = null;
+
           if (user === VALID_USER && pass === VALID_PASS) {
+            redirectUrl = ADMIN_PAGE;
+            role = "admin";
             sessionStorage.setItem("admin_auth", "true");
+          } else if (user === DRIVER_USER && pass === DRIVER_PASS) {
+            redirectUrl = DRIVER_PAGE;
+            role = "driver";
+            sessionStorage.setItem("driver_auth", "true");
+          }
+
+          if (redirectUrl) {
+            const successSub = document.getElementById("successSub");
+            successSub.textContent =
+              role === "admin"
+                ? "Redirecting to admin panel…"
+                : "Redirecting to driver portal…";
+
             document.getElementById("successOverlay").classList.add("show");
             setTimeout(function () {
-              window.location.href = ADMIN_PAGE;
+              window.location.href = redirectUrl;
             }, 1400);
           } else {
             setLoading(false);
