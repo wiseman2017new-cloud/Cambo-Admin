@@ -408,199 +408,6 @@
         font-style: normal;
       }
 
-      /* ── TOGGLE BUTTON ── */
-      .toggle-btn {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--ink-mid);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
-      }
-      .toggle-btn:hover {
-        background: var(--border);
-      }
-      .toggle-btn svg {
-        width: 14px;
-        height: 14px;
-        transition: transform 0.2s;
-      }
-      .toggle-btn.active svg {
-        transform: rotate(180deg);
-      }
-
-      /* ── QUESTION BREAKDOWN ── */
-      .questions-grid {
-        display: none; /* Hidden by default */
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 28px;
-      }
-      .questions-grid.show {
-        display: flex;
-      }
-      .q-card {
-        background: var(--card);
-        border: 1.5px solid var(--border);
-        border-radius: 16px;
-        padding: 18px 20px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
-        transition:
-          border-color 0.18s,
-          box-shadow 0.18s;
-        animation: slideIn 0.3s ease both;
-      }
-      .q-card:hover {
-        border-color: var(--accent);
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
-      }
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .q-card.bad {
-        border-color: #fca5a5;
-        background: #fff8f8;
-      }
-      .q-card.mid {
-        border-color: #fcd34d;
-        background: #fffef8;
-      }
-      .q-card.good {
-        border-color: #6ee7b7;
-      }
-      .q-num {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: var(--bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--ink-soft);
-        flex-shrink: 0;
-      }
-      .q-num.good {
-        background: var(--green-bg);
-        color: var(--green);
-      }
-      .q-num.mid {
-        background: var(--amber-bg);
-        color: var(--amber);
-      }
-      .q-num.bad {
-        background: var(--red-bg);
-        color: var(--red);
-      }
-      .q-body {
-        flex: 1;
-        min-width: 0;
-      }
-      .q-text {
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--ink);
-        margin-bottom: 6px;
-        line-height: 1.4;
-      }
-      .q-bar-wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .q-bar-bg {
-        flex: 1;
-        height: 6px;
-        background: var(--bg);
-        border-radius: 99px;
-        overflow: hidden;
-      }
-      .q-bar-fill {
-        height: 100%;
-        border-radius: 99px;
-        background: var(--accent);
-        transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-      .q-bar-fill.mid {
-        background: var(--amber);
-      }
-      .q-bar-fill.bad {
-        background: var(--red);
-      }
-      .q-bar-label {
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--ink-soft);
-        white-space: nowrap;
-      }
-      .q-score {
-        font-family: "DM Serif Display", serif;
-        font-size: 22px;
-        color: var(--ink);
-        flex-shrink: 0;
-        min-width: 52px;
-        text-align: right;
-        line-height: 1;
-      }
-      .q-score.good {
-        color: var(--green);
-      }
-      .q-score.mid {
-        color: var(--amber);
-      }
-      .q-score.bad {
-        color: var(--red);
-      }
-      .q-score small {
-        font-family: "DM Sans", sans-serif;
-        font-size: 11px;
-        color: var(--ink-soft);
-        font-weight: 400;
-      }
-
-      /* binary pill answer */
-      .q-answer-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-      .q-answer-pill.ok {
-        background: var(--green-bg);
-        color: var(--green);
-      }
-      .q-answer-pill.bad {
-        background: var(--red-bg);
-        color: var(--red);
-      }
-      .q-answer-pill .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: currentColor;
-        display: inline-block;
-      }
-
       /* ── SUBMISSION HISTORY ── */
       .history-card {
         background: var(--card);
@@ -849,8 +656,6 @@
           statAvg: "Avg Score",
           statTrips: "Trips",
           statIssues: "Issues",
-          questionBreakdown: "Question Breakdown",
-          questions: "questions",
           submissionHistory: "Submission History",
           entries: "entries",
           allSubmissions: "All Submissions",
@@ -858,8 +663,6 @@
           issuesOk: "✓ Good",
           noData: "No data",
           ok: "OK",
-          showDetails: "Show Details",
-          hideDetails: "Hide Details",
         },
         km: {
           badge: "កាតពិន្ទុអ្នកបើកបរ",
@@ -881,8 +684,6 @@
           statAvg: "ពិន្ទុមធ្យម",
           statTrips: "ដំណើរ",
           statIssues: "បញ្ហា",
-          questionBreakdown: "ការបែងចែកសំណួរ",
-          questions: "សំណួរ",
           submissionHistory: "ប្រវត្តិការបញ្ជូន",
           entries: "ការបញ្ជូន",
           allSubmissions: "ការបញ្ជូនទាំងអស់",
@@ -890,8 +691,6 @@
           issuesOk: "✓ ល្អ",
           noData: "គ្មានទិន្នន័យ",
           ok: "ល្អ",
-          showDetails: "បង្ហាញលម្អិត",
-          hideDetails: "លាក់លម្អិត",
         },
       };
 
@@ -958,16 +757,6 @@
           month: "long",
           year: "numeric",
         });
-      }
-
-      function toggleQuestions() {
-        const grid = document.getElementById("questionsGrid");
-        const btn = document.getElementById("toggleBtn");
-        const isShowing = grid.classList.toggle("show");
-        btn.classList.toggle("active", isShowing);
-        btn.querySelector("span").textContent = isShowing
-          ? t("hideDetails")
-          : t("showDetails");
       }
 
       // ── INIT ──
@@ -1065,9 +854,6 @@
         }
 
         const ratings = getFilteredRatings();
-        const qs = allQuestions
-          .slice()
-          .sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
 
         if (!ratings.length) {
           document.getElementById("results").innerHTML =
@@ -1083,44 +869,20 @@
           return;
         }
 
-        // Per-question stats
-        const qStats = qs.map((q) => {
-          const answers = ratings
-            .map((r) => (r.responses || {})[q.id])
-            .filter(Boolean);
-
-          if (!answers.length)
-            return { q, avg: null, okCount: 0, badCount: 0, total: 0 };
-
-          if (q.question_type === "binary") {
-            const okCount = answers.filter((a) => a.answer === "OKAY").length;
-            const badCount = answers.filter(
-              (a) => a.answer === "NOT OKAY",
-            ).length;
-            return {
-              q,
-              avg: null,
-              okCount,
-              badCount,
-              total: answers.length,
-              isBinary: true,
-            };
-          } else {
-            const nums = answers
-              .map((a) => parseFloat(a.answer))
+        const overallAvgs = ratings
+          .map((r) => {
+            const nums = Object.values(r.responses || {})
+              .map((v) => parseFloat(v.answer))
               .filter((n) => !isNaN(n));
-            const avg = nums.length
+            return nums.length
               ? nums.reduce((s, n) => s + n, 0) / nums.length
               : null;
-            return { q, avg, total: nums.length, isBinary: false };
-          }
-        });
+          })
+          .filter((a) => a !== null);
 
-        const rangeStats = qStats.filter((s) => !s.isBinary && s.avg !== null);
-        const overallAvg = rangeStats.length
-          ? rangeStats.reduce((s, x) => s + x.avg, 0) / rangeStats.length
+        const overallAvg = overallAvgs.length
+          ? overallAvgs.reduce((s, n) => s + n, 0) / overallAvgs.length
           : null;
-
         const issueCount = ratings.filter((r) =>
           Object.values(r.responses || {}).some((v) => isBad(v.answer)),
         ).length;
@@ -1155,72 +917,11 @@
         </div>
 
         <div class="section-title">
-          <div>
-            ${t("questionBreakdown")}
-            <span>${qs.length} ${t("questions")}</span>
-          </div>
-          <button class="toggle-btn" id="toggleBtn" onclick="toggleQuestions()">
-            <span>${t("showDetails")}</span>
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
-        <div class="questions-grid" id="questionsGrid"></div>
-
-        <div class="section-title">
           ${t("submissionHistory")}
           <span>${ratings.length} ${t("entries")}</span>
         </div>
         <div class="history-card" id="historyCard"></div>
       `;
-
-        // Question cards
-        const grid = document.getElementById("questionsGrid");
-        qStats.forEach((s, idx) => {
-          const card = document.createElement("div");
-          const label = `Q${idx + 1}`;
-
-          if (s.isBinary) {
-            const okPct = s.total ? Math.round((s.okCount / s.total) * 100) : 0;
-            const cardCls = okPct >= 80 ? "good" : okPct >= 50 ? "mid" : "bad";
-            card.className = `q-card ${cardCls}`;
-            card.style.animationDelay = `${idx * 40}ms`;
-            card.innerHTML = `
-            <div class="q-num ${cardCls}">${label}</div>
-            <div class="q-body">
-              <div class="q-text">${s.q.question_text}</div>
-              <div class="q-bar-wrap">
-                <div class="q-bar-bg">
-                  <div class="q-bar-fill ${cardCls === "mid" ? "mid" : cardCls === "bad" ? "bad" : ""}" style="width:${okPct}%"></div>
-                </div>
-                <span class="q-bar-label">${s.okCount}/${s.total} ${t("ok")}</span>
-              </div>
-            </div>
-            <div class="q-score ${cardCls}">${okPct}<small>%</small></div>`;
-          } else {
-            const avg = s.avg;
-            const cls2 = avg !== null ? scoreClass(avg) : "mid";
-            const pct = avg !== null ? Math.round((avg / 5) * 100) : 0;
-            const fillCls =
-              cls2 === "mid" ? "mid" : cls2 === "bad" ? "bad" : "";
-            card.className = `q-card ${avg !== null ? cls2 : ""}`;
-            card.style.animationDelay = `${idx * 40}ms`;
-            card.innerHTML = `
-            <div class="q-num ${cls2}">${label}</div>
-            <div class="q-body">
-              <div class="q-text">${s.q.question_text}</div>
-              <div class="q-bar-wrap">
-                <div class="q-bar-bg">
-                  <div class="q-bar-fill ${fillCls}" style="width:${pct}%"></div>
-                </div>
-                <span class="q-bar-label">${avg !== null ? avg.toFixed(1) + " / 5" : t("noData")}</span>
-              </div>
-            </div>
-            <div class="q-score ${cls2}">${avg !== null ? avg.toFixed(1) : "–"}<small>${avg !== null ? "/5" : ""}</small></div>`;
-          }
-          grid.appendChild(card);
-        });
 
         // History
         const hCard = document.getElementById("historyCard");
@@ -1319,7 +1020,7 @@
           `<div class="empty-state">
         <div class="icon">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="12" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
           </svg>
         </div>
         <h3>${t("errorTitle")}</h3>
