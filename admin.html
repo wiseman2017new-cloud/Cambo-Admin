@@ -915,6 +915,91 @@
         <div class="content">
           <!-- DASHBOARD -->
           <div class="panel active" id="panel-dashboard">
+            <!-- Date filter bar -->
+            <div class="card" style="margin-bottom: 20px">
+              <div class="card-body" style="padding: 14px 20px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: flex-end;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-right: 4px;
+                    "
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      fill="none"
+                      stroke="var(--ink-light)"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span
+                      style="
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(--ink-mid);
+                      "
+                      >Filter by Date</span
+                    >
+                  </div>
+                  <div>
+                    <label class="field-label" style="margin-bottom: 4px"
+                      >From</label
+                    >
+                    <input
+                      type="date"
+                      id="dashDateFrom"
+                      onchange="loadDashboard()"
+                      style="width: 150px; padding: 7px 10px; font-size: 13px"
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label" style="margin-bottom: 4px"
+                      >To</label
+                    >
+                    <input
+                      type="date"
+                      id="dashDateTo"
+                      onchange="loadDashboard()"
+                      style="width: 150px; padding: 7px 10px; font-size: 13px"
+                    />
+                  </div>
+                  <button
+                    class="btn btn-ghost btn-sm"
+                    onclick="
+                      document.getElementById('dashDateFrom').value = '';
+                      document.getElementById('dashDateTo').value = '';
+                      loadDashboard();
+                    "
+                  >
+                    Clear
+                  </button>
+                  <span
+                    id="dashDateLabel"
+                    style="
+                      font-size: 11px;
+                      color: var(--ink-light);
+                      margin-left: 4px;
+                    "
+                  ></span>
+                </div>
+              </div>
+            </div>
             <div class="stat-grid">
               <div class="stat-card green">
                 <div class="stat-icon green">
@@ -1232,7 +1317,10 @@
                 <div><div class="section-title">Filter Ratings</div></div>
               </div>
               <div class="card-body">
-                <div class="form-grid form-grid-2">
+                <div
+                  class="form-grid"
+                  style="grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px"
+                >
                   <div>
                     <label class="field-label">Driver</label>
                     <div class="select-wrap">
@@ -1249,6 +1337,36 @@
                       </select>
                     </div>
                   </div>
+                  <div>
+                    <label class="field-label">Trip Date From</label>
+                    <input
+                      type="date"
+                      id="filterDateFrom"
+                      onchange="loadRatings()"
+                    />
+                  </div>
+                  <div>
+                    <label class="field-label">Trip Date To</label>
+                    <input
+                      type="date"
+                      id="filterDateTo"
+                      onchange="loadRatings()"
+                    />
+                  </div>
+                </div>
+                <div style="margin-top: 10px; text-align: right">
+                  <button
+                    class="btn btn-ghost btn-sm"
+                    onclick="
+                      document.getElementById('filterDriver').value = '';
+                      document.getElementById('filterBranch').value = '';
+                      document.getElementById('filterDateFrom').value = '';
+                      document.getElementById('filterDateTo').value = '';
+                      loadRatings();
+                    "
+                  >
+                    Clear Filters
+                  </button>
                 </div>
               </div>
             </div>
@@ -1307,6 +1425,22 @@
                       </select>
                     </div>
                   </div>
+                  <div class="field" style="min-width: 140px">
+                    <label class="field-label">Trip Date From</label>
+                    <input
+                      type="date"
+                      id="reportDateFrom"
+                      onchange="loadReport()"
+                    />
+                  </div>
+                  <div class="field" style="min-width: 140px">
+                    <label class="field-label">Trip Date To</label>
+                    <input
+                      type="date"
+                      id="reportDateTo"
+                      onchange="loadReport()"
+                    />
+                  </div>
                   <div class="field" style="flex: 1; min-width: 200px">
                     <label class="field-label">Search</label
                     ><input
@@ -1316,6 +1450,19 @@
                       oninput="filterReportTable()"
                     />
                   </div>
+                  <button
+                    class="btn btn-ghost btn-sm"
+                    style="margin-top: 6px; flex-shrink: 0"
+                    onclick="
+                      document.getElementById('reportMonthFilter').value = '';
+                      document.getElementById('reportDateFrom').value = '';
+                      document.getElementById('reportDateTo').value = '';
+                      document.getElementById('reportSearch').value = '';
+                      loadReport();
+                    "
+                  >
+                    Clear
+                  </button>
                   <button
                     class="btn btn-primary"
                     onclick="exportReportCSV()"
@@ -1626,6 +1773,28 @@
         return val === "1" || val === "2" || val === "NOT OKAY";
       }
 
+      // ── SINGLE SOURCE OF TRUTH FOR ALL COUNTS ──
+      function updateAllBadges() {
+        document.getElementById("driverBadge").textContent = allDrivers.length;
+        document.getElementById("questionBadge").textContent =
+          allQuestions.length;
+        document.getElementById("branchBadge").textContent = allBranches.length;
+        const rc = document.getElementById("ratingsCount");
+        if (rc)
+          rc.textContent =
+            allRatings.length +
+            " submission" +
+            (allRatings.length !== 1 ? "s" : "");
+        document.getElementById("statRatings").textContent = allRatings.length;
+        document.getElementById("statDrivers").textContent = allDrivers.length;
+        document.getElementById("statBranches").textContent =
+          allBranches.length;
+        const issues = allRatings.filter((r) =>
+          Object.values(r.responses || {}).some((v) => isBad(v.answer)),
+        ).length;
+        document.getElementById("statIssues").textContent = issues;
+      }
+
       function scoreColor(avg) {
         if (avg >= 4) return "green";
         if (avg >= 3) return "amber";
@@ -1646,28 +1815,63 @@
         allQuestions = qRes.data || [];
         allBranches = bRes.data || [];
         allRatings = rRes.data || [];
-        document.getElementById("driverBadge").textContent = allDrivers.length;
-        document.getElementById("questionBadge").textContent =
-          allQuestions.length;
-        document.getElementById("branchBadge").textContent = allBranches.length;
+        updateAllBadges();
         loadDashboard();
       }
 
       // ── DASHBOARD ──
-      function loadDashboard() {
-        const issues = allRatings.filter((r) =>
+      async function loadDashboard() {
+        // Always re-fetch fresh counts from DB so stats are never stale
+        const [dRes, bRes, rRes] = await Promise.all([
+          db.from("drivers").select("*").order("name"),
+          db.from("branches").select("*").order("branch_name"),
+          db
+            .from("ratings")
+            .select("*")
+            .order("created_at", { ascending: false }),
+        ]);
+        allDrivers = dRes.data || [];
+        allBranches = bRes.data || [];
+        allRatings = rRes.data || [];
+        updateAllBadges();
+
+        // Apply date filter for dashboard metrics
+        const dateFrom = document.getElementById("dashDateFrom")?.value;
+        const dateTo = document.getElementById("dashDateTo")?.value;
+        let dashRatings = allRatings;
+        if (dateFrom || dateTo) {
+          dashRatings = allRatings.filter((r) => {
+            const d = r.rating_date || r.created_at?.slice(0, 10);
+            if (!d) return false;
+            if (dateFrom && d < dateFrom) return false;
+            if (dateTo && d > dateTo) return false;
+            return true;
+          });
+        }
+        // Update label
+        const label = document.getElementById("dashDateLabel");
+        if (label) {
+          if (dateFrom || dateTo) {
+            label.textContent =
+              dashRatings.length +
+              " of " +
+              allRatings.length +
+              " ratings shown";
+          } else {
+            label.textContent = "";
+          }
+        }
+        // Update stat cards with filtered data
+        const filteredIssues = dashRatings.filter((r) =>
           Object.values(r.responses || {}).some((v) => isBad(v.answer)),
         ).length;
-        document.getElementById("statRatings").textContent = allRatings.length;
-        document.getElementById("statDrivers").textContent = allDrivers.length;
-        document.getElementById("statBranches").textContent =
-          allBranches.length;
-        document.getElementById("statIssues").textContent = issues;
+        document.getElementById("statRatings").textContent = dashRatings.length;
+        document.getElementById("statIssues").textContent = filteredIssues;
 
         const driverMap = {};
         allDrivers.forEach((d) => (driverMap[d.id] = d.name));
         const driverScores = {};
-        allRatings.forEach((r) => {
+        dashRatings.forEach((r) => {
           const scores = Object.values(r.responses || {})
             .map((v) => parseFloat(v.answer))
             .filter((n) => !isNaN(n));
@@ -1704,7 +1908,7 @@
         }
 
         const recentEl = document.getElementById("recentRatingsList");
-        const recent = allRatings.slice(0, 8);
+        const recent = dashRatings.slice(0, 8);
         if (!recent.length) {
           recentEl.innerHTML =
             '<div style="text-align:center;padding:32px;color:var(--ink-ghost);font-size:13px">No ratings yet</div>';
@@ -1732,7 +1936,7 @@
           '<tr><td colspan="6"><div class="spinner"></div></td></tr>';
         const dRes = await db.from("drivers").select("*").order("name");
         allDrivers = dRes.data || [];
-        document.getElementById("driverBadge").textContent = allDrivers.length;
+        updateAllBadges();
         const ratingCounts = {},
           ratingAvg = {};
         allRatings.forEach((r) => {
@@ -1791,8 +1995,7 @@
           '<tr><td colspan="4"><div class="spinner"></div></td></tr>';
         const qRes = await db.from("questions").select("*").order("sort_order");
         allQuestions = qRes.data || [];
-        document.getElementById("questionBadge").textContent =
-          allQuestions.length;
+        updateAllBadges();
         if (!allQuestions.length) {
           tbody.innerHTML =
             '<tr class="empty-row"><td colspan="4">No questions added yet</td></tr>';
@@ -1870,7 +2073,7 @@
           '<tr><td colspan="4"><div class="spinner"></div></td></tr>';
         const bRes = await db.from("branches").select("*").order("branch_name");
         allBranches = bRes.data || [];
-        document.getElementById("branchBadge").textContent = allBranches.length;
+        updateAllBadges();
         const branchCounts = {};
         allRatings.forEach((r) => {
           branchCounts[r.branch] = (branchCounts[r.branch] || 0) + 1;
@@ -1942,8 +2145,12 @@
           .limit(200);
         const dFilter = fDriver.value;
         const bFilter = fBranch.value;
+        const dateFrom = document.getElementById("filterDateFrom").value;
+        const dateTo = document.getElementById("filterDateTo").value;
         if (dFilter) query = query.eq("driver_id", dFilter);
         if (bFilter) query = query.eq("branch", bFilter);
+        if (dateFrom) query = query.gte("rating_date", dateFrom);
+        if (dateTo) query = query.lte("rating_date", dateTo);
 
         const { data, error } = await query;
 
@@ -1956,13 +2163,17 @@
         }
 
         // Keep allRatings in sync (needed for dashboard stats)
-        if (!fDriver.value && !fBranch.value) {
+        if (!fDriver.value && !fBranch.value && !dateFrom && !dateTo) {
           allRatings = data;
+          updateAllBadges();
+        } else {
+          // When filtered, show filtered count in the sub-label only
+          document.getElementById("ratingsCount").textContent =
+            data.length +
+            " submission" +
+            (data.length !== 1 ? "s" : "") +
+            " (filtered)";
         }
-
-        // ✅ FIX 3: Correct element ID for count (was "ratingsCount")
-        document.getElementById("ratingsCount").textContent =
-          `${data.length} submission${data.length !== 1 ? "s" : ""}`;
 
         const driverMap = Object.fromEntries(
           allDrivers.map((d) => [d.id, d.name]),
@@ -2063,13 +2274,8 @@
           allBranches = allBranches.filter((b) => b.id != id);
           loadBranchesPanel();
         }
-        document.getElementById("driverBadge").textContent = allDrivers.length;
-        document.getElementById("questionBadge").textContent =
-          allQuestions.length;
-        document.getElementById("branchBadge").textContent = allBranches.length;
+        updateAllBadges();
       }
-
-      // ── DELETE RATING ──
       let _pendingDeleteId = null;
 
       function confirmDeleteRating(id) {
@@ -2253,15 +2459,23 @@
           monthSel.appendChild(opt);
         });
         const selMonth = monthSel.value;
-        const filtered = selMonth
-          ? (data || []).filter((r) => {
-              const d = new Date(r.created_at);
-              return (
-                `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}` ===
-                selMonth
-              );
-            })
-          : data || [];
+        const reportDateFrom = document.getElementById("reportDateFrom").value;
+        const reportDateTo = document.getElementById("reportDateTo").value;
+        const filtered = (data || []).filter((r) => {
+          // Month filter (based on created_at)
+          if (selMonth) {
+            const d = new Date(r.created_at);
+            const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+            if (ym !== selMonth) return false;
+          }
+          // Date range filter (based on rating_date)
+          if (reportDateFrom || reportDateTo) {
+            const rd = r.rating_date || "";
+            if (reportDateFrom && rd < reportDateFrom) return false;
+            if (reportDateTo && rd > reportDateTo) return false;
+          }
+          return true;
+        });
         const driverMap = Object.fromEntries(
           allDrivers.map((d) => [d.id, d.name]),
         );
