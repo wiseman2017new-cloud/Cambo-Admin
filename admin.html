@@ -18,7 +18,6 @@
         margin: 0;
         padding: 0;
       }
-
       :root {
         --ink: #0d0f12;
         --ink-mid: #3d4550;
@@ -38,7 +37,6 @@
         --blue-light: #eff6ff;
         --sidebar-w: 240px;
       }
-
       html,
       body {
         height: 100%;
@@ -47,15 +45,11 @@
         color: var(--ink);
         -webkit-font-smoothing: antialiased;
       }
-
-      /* ── LAYOUT ── */
       .layout {
         display: flex;
         height: 100vh;
         overflow: hidden;
       }
-
-      /* ── SIDEBAR ── */
       .sidebar {
         width: var(--sidebar-w);
         background: var(--ink);
@@ -117,7 +111,6 @@
         text-transform: uppercase;
         font-weight: 600;
       }
-
       .sidebar-nav {
         flex: 1;
         padding: 16px 12px;
@@ -173,22 +166,18 @@
         padding: 2px 7px;
         border-radius: 20px;
       }
-
       .sidebar-footer {
         padding: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.07);
         font-size: 11px;
         color: rgba(255, 255, 255, 0.2);
       }
-
-      /* ── MAIN ── */
       .main {
         flex: 1;
         display: flex;
         flex-direction: column;
         overflow: hidden;
       }
-
       .topbar {
         background: var(--card);
         border-bottom: 1px solid var(--border);
@@ -244,14 +233,11 @@
         font-weight: 600;
         color: var(--ink-mid);
       }
-
       .content {
         flex: 1;
         overflow-y: auto;
         padding: 32px;
       }
-
-      /* ── PANEL ── */
       .panel {
         display: none;
       }
@@ -269,8 +255,6 @@
           transform: translateY(0);
         }
       }
-
-      /* ── STAT CARDS ── */
       .stat-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -350,8 +334,6 @@
         color: var(--ink-light);
         font-weight: 500;
       }
-
-      /* ── SECTION HEADER ── */
       .section-hdr {
         display: flex;
         align-items: center;
@@ -368,8 +350,6 @@
         color: var(--ink-light);
         margin-top: 2px;
       }
-
-      /* ── BUTTON ── */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -423,8 +403,6 @@
         cursor: not-allowed;
         transform: none !important;
       }
-
-      /* ── CARD ── */
       .card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -441,8 +419,6 @@
       .card-body {
         padding: 20px;
       }
-
-      /* ── TABLE ── */
       .tbl-wrap {
         overflow-x: auto;
       }
@@ -477,8 +453,6 @@
         font-weight: 600;
         color: var(--ink);
       }
-
-      /* ── BADGE ── */
       .badge-pill {
         display: inline-flex;
         align-items: center;
@@ -508,8 +482,6 @@
         background: var(--surface);
         color: var(--ink-light);
       }
-
-      /* ── FORM ── */
       .form-grid {
         display: grid;
         gap: 16px;
@@ -589,8 +561,6 @@
         justify-content: flex-end;
         margin-top: 8px;
       }
-
-      /* ── ADD FORM CARD ── */
       .add-card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -625,8 +595,6 @@
       .add-card-body {
         padding: 20px;
       }
-
-      /* ── STATUS MSG ── */
       .status-banner {
         padding: 12px 16px;
         border-radius: 10px;
@@ -645,8 +613,6 @@
         color: var(--red);
         border: 1px solid #fecaca;
       }
-
-      /* ── SPINNER ── */
       .spinner {
         width: 30px;
         height: 30px;
@@ -661,7 +627,6 @@
           transform: rotate(360deg);
         }
       }
-
       .empty-row td {
         text-align: center;
         padding: 40px;
@@ -669,8 +634,6 @@
         font-style: italic;
         font-size: 13px;
       }
-
-      /* ── MODAL ── */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -724,8 +687,6 @@
         gap: 10px;
         justify-content: flex-end;
       }
-
-      /* ── CONFIRM DIALOG ── */
       .confirm-body {
         text-align: center;
         padding: 24px;
@@ -764,16 +725,11 @@
         flex: 1;
         justify-content: center;
       }
-
-      /* ── DASHBOARD ── */
       .dash-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         margin-bottom: 24px;
-      }
-      .ratings-table-wrap {
-        margin-top: 0;
       }
       .score-bar-wrap {
         display: flex;
@@ -805,8 +761,6 @@
         width: 28px;
         text-align: right;
       }
-
-      /* ── Q TYPE TAG ── */
       .type-tag {
         display: inline-flex;
         align-items: center;
@@ -825,7 +779,6 @@
         background: #fdf4ff;
         color: #7c3aed;
       }
-
       .q-order-badge {
         display: inline-flex;
         align-items: center;
@@ -838,7 +791,6 @@
         font-size: 11px;
         font-weight: 700;
       }
-
       @media (max-width: 900px) {
         .stat-grid {
           grid-template-columns: 1fr 1fr;
@@ -854,7 +806,6 @@
   </head>
   <body>
     <div class="layout">
-      <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="sidebar-logo">
           <div class="logo-mark">
@@ -872,7 +823,6 @@
           </div>
           <div class="logo-sub">Admin Console</div>
         </div>
-
         <nav class="sidebar-nav">
           <div class="nav-section-label">Overview</div>
           <button class="nav-item active" onclick="showPanel('dashboard')">
@@ -886,7 +836,6 @@
             </svg>
             Dashboard
           </button>
-
           <div class="nav-section-label">Manage</div>
           <button class="nav-item" onclick="showPanel('drivers')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -897,8 +846,7 @@
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            Drivers
-            <span class="badge" id="driverBadge">–</span>
+            Drivers <span class="badge" id="driverBadge">–</span>
           </button>
           <button class="nav-item" onclick="showPanel('questions')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -909,8 +857,7 @@
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Questions
-            <span class="badge" id="questionBadge">–</span>
+            Questions <span class="badge" id="questionBadge">–</span>
           </button>
           <button class="nav-item" onclick="showPanel('branches')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -921,8 +868,7 @@
                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
               />
             </svg>
-            Branches
-            <span class="badge" id="branchBadge">–</span>
+            Branches <span class="badge" id="branchBadge">–</span>
           </button>
           <button class="nav-item" onclick="showPanel('ratings')">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -947,11 +893,9 @@
             Report
           </button>
         </nav>
-
         <div class="sidebar-footer">Connected to Supabase · v1.0</div>
       </aside>
 
-      <!-- MAIN -->
       <div class="main">
         <div class="topbar">
           <div class="topbar-left">
@@ -969,7 +913,7 @@
         </div>
 
         <div class="content">
-          <!-- ── DASHBOARD ── -->
+          <!-- DASHBOARD -->
           <div class="panel active" id="panel-dashboard">
             <div class="stat-grid">
               <div class="stat-card green">
@@ -1029,9 +973,7 @@
                 <div class="stat-label">Flagged Issues</div>
               </div>
             </div>
-
             <div class="dash-grid">
-              <!-- Driver performance -->
               <div class="card">
                 <div class="card-header">
                   <div>
@@ -1041,7 +983,6 @@
                 </div>
                 <div id="driverPerfList"><div class="spinner"></div></div>
               </div>
-              <!-- Recent ratings -->
               <div class="card">
                 <div class="card-header">
                   <div>
@@ -1054,7 +995,7 @@
             </div>
           </div>
 
-          <!-- ── DRIVERS ── -->
+          <!-- DRIVERS -->
           <div class="panel" id="panel-drivers">
             <div class="add-card">
               <div class="add-card-header">
@@ -1074,10 +1015,8 @@
                 <div id="driverStatus" class="status-banner"></div>
                 <div class="form-row">
                   <div class="field">
-                    <label class="field-label"
-                      >Driver Name <span>*</span></label
-                    >
-                    <input
+                    <label class="field-label">Driver Name <span>*</span></label
+                    ><input
                       type="text"
                       id="driverName"
                       placeholder="e.g. Sokha Chann"
@@ -1094,14 +1033,12 @@
                         stroke-linejoin="round"
                         stroke-width="2.5"
                         d="M12 4v16m8-8H4"
-                      />
-                    </svg>
-                    Add Driver
+                      /></svg
+                    >Add Driver
                   </button>
                 </div>
               </div>
             </div>
-
             <div class="card">
               <div class="card-header">
                 <div><div class="section-title">All Drivers</div></div>
@@ -1120,7 +1057,7 @@
                   </thead>
                   <tbody id="driverTableBody">
                     <tr>
-                      <td colspan="7"><div class="spinner"></div></td>
+                      <td colspan="6"><div class="spinner"></div></td>
                     </tr>
                   </tbody>
                 </table>
@@ -1128,7 +1065,7 @@
             </div>
           </div>
 
-          <!-- ── QUESTIONS ── -->
+          <!-- QUESTIONS -->
           <div class="panel" id="panel-questions">
             <div class="add-card">
               <div class="add-card-header">
@@ -1150,8 +1087,7 @@
                   <div style="grid-column: 1/-1">
                     <label class="field-label"
                       >Question Text <span>*</span></label
-                    >
-                    <input
+                    ><input
                       type="text"
                       id="qText"
                       placeholder="e.g. Did the driver follow traffic rules?"
@@ -1169,8 +1105,8 @@
                     </div>
                   </div>
                   <div>
-                    <label class="field-label">Sort Order</label>
-                    <input
+                    <label class="field-label">Sort Order</label
+                    ><input
                       type="number"
                       id="qOrder"
                       placeholder="e.g. 1, 2, 3…"
@@ -1186,14 +1122,12 @@
                         stroke-linejoin="round"
                         stroke-width="2.5"
                         d="M12 4v16m8-8H4"
-                      />
-                    </svg>
-                    Add Question
+                      /></svg
+                    >Add Question
                   </button>
                 </div>
               </div>
             </div>
-
             <div class="card">
               <div class="card-header">
                 <div>
@@ -1223,7 +1157,7 @@
             </div>
           </div>
 
-          <!-- ── BRANCHES ── -->
+          <!-- BRANCHES -->
           <div class="panel" id="panel-branches">
             <div class="add-card">
               <div class="add-card-header">
@@ -1243,10 +1177,8 @@
                 <div id="branchStatus" class="status-banner"></div>
                 <div class="form-row">
                   <div class="field">
-                    <label class="field-label"
-                      >Branch Name <span>*</span></label
-                    >
-                    <input
+                    <label class="field-label">Branch Name <span>*</span></label
+                    ><input
                       type="text"
                       id="branchName"
                       placeholder="e.g. Phnom Penh Central"
@@ -1263,14 +1195,12 @@
                         stroke-linejoin="round"
                         stroke-width="2.5"
                         d="M12 4v16m8-8H4"
-                      />
-                    </svg>
-                    Add Branch
+                      /></svg
+                    >Add Branch
                   </button>
                 </div>
               </div>
             </div>
-
             <div class="card">
               <div class="card-header">
                 <div><div class="section-title">All Branches</div></div>
@@ -1295,7 +1225,7 @@
             </div>
           </div>
 
-          <!-- ── ALL RATINGS ── -->
+          <!-- ALL RATINGS -->
           <div class="panel" id="panel-ratings">
             <div class="card" style="margin-bottom: 20px">
               <div class="card-header">
@@ -1322,8 +1252,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="card ratings-table-wrap">
+            <div class="card">
               <div class="card-header">
                 <div>
                   <div class="section-title">Rating Submissions</div>
@@ -1331,6 +1260,7 @@
                 </div>
               </div>
               <div class="tbl-wrap">
+                <!-- ✅ FIX: ID corrected to "ratingTableBody" to match JS -->
                 <table>
                   <thead>
                     <tr>
@@ -1340,10 +1270,10 @@
                       <th>Submitted By</th>
                       <th>Issues</th>
                       <th>Submitted At</th>
-                      <th></th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
-                  <tbody id="ratingsTableBody">
+                  <tbody id="ratingTableBody">
                     <tr>
                       <td colspan="7"><div class="spinner"></div></td>
                     </tr>
@@ -1353,9 +1283,8 @@
             </div>
           </div>
 
-          <!-- ── REPORT ── -->
+          <!-- REPORT -->
           <div class="panel" id="panel-report">
-            <!-- Filters Bar -->
             <div class="card" style="margin-bottom: 20px">
               <div class="card-header">
                 <div>
@@ -1379,8 +1308,8 @@
                     </div>
                   </div>
                   <div class="field" style="flex: 1; min-width: 200px">
-                    <label class="field-label">Search</label>
-                    <input
+                    <label class="field-label">Search</label
+                    ><input
                       type="text"
                       id="reportSearch"
                       placeholder="Search by username, driver, branch…"
@@ -1398,16 +1327,13 @@
                         stroke-linejoin="round"
                         stroke-width="2"
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                    Export CSV
+                      /></svg
+                    >Export CSV
                   </button>
                 </div>
               </div>
             </div>
-
-            <!-- Table -->
-            <div class="card ratings-table-wrap">
+            <div class="card">
               <div class="card-header">
                 <div>
                   <div class="section-title">Rating Log</div>
@@ -1436,9 +1362,7 @@
           </div>
         </div>
       </div>
-      <!-- /main -->
     </div>
-    <!-- /layout -->
 
     <!-- Edit Question Modal -->
     <div class="modal-overlay" id="editQModal">
@@ -1452,8 +1376,8 @@
           <input type="hidden" id="editQId" />
           <div class="form-grid" style="gap: 14px">
             <div>
-              <label class="field-label">Question Text <span>*</span></label>
-              <input type="text" id="editQText" />
+              <label class="field-label">Question Text <span>*</span></label
+              ><input type="text" id="editQText" />
             </div>
             <div class="form-grid form-grid-2">
               <div>
@@ -1466,17 +1390,16 @@
                 </div>
               </div>
               <div>
-                <label class="field-label">Sort Order</label>
-                <input type="number" id="editQOrder" min="1" />
+                <label class="field-label">Sort Order</label
+                ><input type="number" id="editQOrder" min="1" />
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-ghost" onclick="closeModal('editQModal')">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="saveQuestion()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="saveQuestion()">
             Save Changes
           </button>
         </div>
@@ -1502,7 +1425,7 @@
       </div>
     </div>
 
-    <!-- Confirm Delete Modal -->
+    <!-- Confirm Delete (drivers/questions/branches) -->
     <div class="modal-overlay" id="confirmModal">
       <div class="modal" style="max-width: 380px">
         <div class="confirm-body">
@@ -1523,26 +1446,129 @@
         </div>
         <div class="confirm-actions">
           <button class="btn btn-ghost" onclick="closeModal('confirmModal')">
+            Cancel</button
+          ><button class="btn btn-danger" id="confirmBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Delete Rating -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal" style="max-width: 400px">
+        <div class="confirm-body">
+          <div class="confirm-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </div>
+          <div class="confirm-title">Delete Submission?</div>
+          <div class="confirm-desc">
+            Are you sure you want to remove this rating? This action cannot be
+            undone.
+          </div>
+        </div>
+        <div class="confirm-actions">
+          <button class="btn btn-ghost" onclick="closeModal('deleteModal')">
+            Cancel</button
+          ><button
+            class="btn btn-danger"
+            id="confirmDeleteBtn"
+            onclick="executeDeleteRating()"
+          >
+            Delete Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Rating Modal -->
+    <div class="modal-overlay" id="editRatingModal">
+      <div class="modal" style="max-width: 500px">
+        <div class="modal-header">
+          <div class="modal-title">Edit Rating Submission</div>
+          <div class="modal-sub">Update the submission details below</div>
+        </div>
+        <div class="modal-body">
+          <div id="editRatingStatus" class="status-banner"></div>
+          <input type="hidden" id="editRatingId" />
+          <div class="form-grid" style="gap: 14px">
+            <div>
+              <label class="field-label">Driver <span>*</span></label>
+              <div class="select-wrap">
+                <select id="editRatingDriver"></select>
+              </div>
+            </div>
+            <div class="form-grid form-grid-2">
+              <div>
+                <label class="field-label">Branch <span>*</span></label>
+                <div class="select-wrap">
+                  <select id="editRatingBranch"></select>
+                </div>
+              </div>
+              <div>
+                <label class="field-label">Trip Date</label>
+                <input
+                  type="text"
+                  id="editRatingDate"
+                  placeholder="e.g. 5/5/2026"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="field-label">Submitted By</label>
+              <input
+                type="text"
+                id="editRatingSubmittedBy"
+                placeholder="Username"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeModal('editRatingModal')">
             Cancel
           </button>
-          <button class="btn btn-danger" id="confirmBtn">Delete</button>
+          <button
+            class="btn btn-primary"
+            id="saveRatingBtn"
+            onclick="saveEditRating()"
+          >
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
 
     <script>
-      // ── SUPABASE ──
       const supabaseUrl = "https://vioupfkhpdyfbuatjtxr.supabase.co";
       const supabaseKey =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
       const db = supabase.createClient(supabaseUrl, supabaseKey);
 
-      let allDrivers = [];
-      let allBranches = [];
-      let allQuestions = [];
-      let allRatings = [];
+      let allDrivers = [],
+        allBranches = [],
+        allQuestions = [],
+        allRatings = [];
 
-      // ── NAV ──
       const pageMeta = {
         dashboard: ["Dashboard", "Overview of driver rating activity"],
         drivers: ["Drivers", "Manage your fleet of drivers"],
@@ -1606,7 +1632,6 @@
         return "red";
       }
 
-      // ── INIT ──
       async function init() {
         const [dRes, qRes, bRes, rRes] = await Promise.all([
           db.from("drivers").select("*").order("name"),
@@ -1621,35 +1646,29 @@
         allQuestions = qRes.data || [];
         allBranches = bRes.data || [];
         allRatings = rRes.data || [];
-
         document.getElementById("driverBadge").textContent = allDrivers.length;
         document.getElementById("questionBadge").textContent =
           allQuestions.length;
         document.getElementById("branchBadge").textContent = allBranches.length;
-
         loadDashboard();
       }
 
       // ── DASHBOARD ──
       function loadDashboard() {
-        // Stats
-        const issues = allRatings.filter((r) => {
-          const resp = r.responses || {};
-          return Object.values(resp).some((v) => isBad(v.answer));
-        }).length;
+        const issues = allRatings.filter((r) =>
+          Object.values(r.responses || {}).some((v) => isBad(v.answer)),
+        ).length;
         document.getElementById("statRatings").textContent = allRatings.length;
         document.getElementById("statDrivers").textContent = allDrivers.length;
         document.getElementById("statBranches").textContent =
           allBranches.length;
         document.getElementById("statIssues").textContent = issues;
 
-        // Driver performance
         const driverMap = {};
         allDrivers.forEach((d) => (driverMap[d.id] = d.name));
         const driverScores = {};
         allRatings.forEach((r) => {
-          const resp = r.responses || {};
-          const scores = Object.values(resp)
+          const scores = Object.values(r.responses || {})
             .map((v) => parseFloat(v.answer))
             .filter((n) => !isNaN(n));
           if (!driverScores[r.driver_id])
@@ -1671,30 +1690,19 @@
         if (!entries.length) {
           perfEl.innerHTML =
             '<div style="text-align:center;padding:32px;color:var(--ink-ghost);font-size:13px">No data yet</div>';
-          return;
+        } else {
+          perfEl.innerHTML =
+            `<div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">` +
+            entries
+              .map((e) => {
+                const pct = Math.round((e.avg / 5) * 100);
+                const col = scoreColor(e.avg);
+                return `<div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600;color:var(--ink)">${e.name}</span><span style="font-size:11px;color:var(--ink-light)">${e.trips} trips</span></div><div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar-fill ${col === "red" ? "bad" : col === "amber" ? "mid" : ""}" style="width:${pct}%"></div></div><span class="score-num" style="color:var(--${col === "green" ? "accent-dark" : col === "amber" ? "amber" : "red"})">${e.avg.toFixed(1)}</span></div></div>`;
+              })
+              .join("") +
+            `</div>`;
         }
 
-        perfEl.innerHTML =
-          `<div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">` +
-          entries
-            .map((e) => {
-              const pct = Math.round((e.avg / 5) * 100);
-              const col = scoreColor(e.avg);
-              return `<div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <span style="font-size:13px;font-weight:600;color:var(--ink)">${e.name}</span>
-            <span style="font-size:11px;color:var(--ink-light)">${e.trips} trips</span>
-          </div>
-          <div class="score-bar-wrap">
-            <div class="score-bar-bg"><div class="score-bar-fill ${col === "red" ? "bad" : col === "amber" ? "mid" : ""}" style="width:${pct}%"></div></div>
-            <span class="score-num" style="color:var(--${col === "green" ? "accent-dark" : col === "amber" ? "amber" : "red"})">${e.avg.toFixed(1)}</span>
-          </div>
-        </div>`;
-            })
-            .join("") +
-          `</div>`;
-
-        // Recent ratings
         const recentEl = document.getElementById("recentRatingsList");
         const recent = allRatings.slice(0, 8);
         if (!recent.length) {
@@ -1711,13 +1719,7 @@
               );
               const dName = driverMap[r.driver_id] || "Unknown";
               const date = new Date(r.created_at).toLocaleDateString();
-              return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)">
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:600;color:var(--ink)">${dName}</div>
-            <div style="font-size:11px;color:var(--ink-light)">${r.branch} · ${date}</div>
-          </div>
-          ${hasIssue ? '<span class="badge-pill badge-red">⚠ Issues</span>' : '<span class="badge-pill badge-green">✓ Good</span>'}
-        </div>`;
+              return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--ink)">${dName}</div><div style="font-size:11px;color:var(--ink-light)">${r.branch} · ${date}</div></div>${hasIssue ? '<span class="badge-pill badge-red">⚠ Issues</span>' : '<span class="badge-pill badge-green">✓ Good</span>'}</div>`;
             })
             .join("") +
           `</div>`;
@@ -1728,13 +1730,11 @@
         const tbody = document.getElementById("driverTableBody");
         tbody.innerHTML =
           '<tr><td colspan="6"><div class="spinner"></div></td></tr>';
-
         const dRes = await db.from("drivers").select("*").order("name");
         allDrivers = dRes.data || [];
         document.getElementById("driverBadge").textContent = allDrivers.length;
-
-        const ratingCounts = {};
-        const ratingAvg = {};
+        const ratingCounts = {},
+          ratingAvg = {};
         allRatings.forEach((r) => {
           ratingCounts[r.driver_id] = (ratingCounts[r.driver_id] || 0) + 1;
           const scores = Object.values(r.responses || {})
@@ -1745,7 +1745,6 @@
           ratingAvg[r.driver_id].sum += scores.reduce((a, b) => a + b, 0);
           ratingAvg[r.driver_id].cnt += scores.length;
         });
-
         if (!allDrivers.length) {
           tbody.innerHTML =
             '<tr class="empty-row"><td colspan="6">No drivers added yet</td></tr>';
@@ -1763,19 +1762,7 @@
             const added = d.created_at
               ? new Date(d.created_at).toLocaleDateString()
               : "–";
-            return `<tr>
-        <td>${i + 1}</td>
-        <td class="td-primary">${d.name}</td>
-        <td><span class="badge-pill badge-blue">${cnt}</span></td>
-        <td><span class="badge-pill badge-${col}">${avg}</span></td>
-        <td>${added}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="confirmDelete('driver','${d.id}','${d.name}')">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            Delete
-          </button>
-        </td>
-      </tr>`;
+            return `<tr><td>${i + 1}</td><td class="td-primary">${d.name}</td><td><span class="badge-pill badge-blue">${cnt}</span></td><td><span class="badge-pill badge-${col}">${avg}</span></td><td>${added}</td><td><button class="btn btn-danger btn-sm" onclick="confirmDelete('driver','${d.id}','${d.name}')"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></td></tr>`;
           })
           .join("");
       }
@@ -1813,23 +1800,8 @@
         }
         tbody.innerHTML = allQuestions
           .map(
-            (q) => `<tr>
-      <td><span class="q-order-badge">${q.sort_order || "–"}</span></td>
-      <td class="td-primary" style="max-width:380px">${q.question_text}</td>
-      <td><span class="type-tag type-${q.question_type}">${q.question_type === "binary" ? "Binary" : "Range 1–5"}</span></td>
-      <td>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost btn-sm" onclick="openEditQ('${q.id}')">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            Edit
-          </button>
-          <button class="btn btn-danger btn-sm" onclick="confirmDelete('question','${q.id}','this question')">
-            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            Delete
-          </button>
-        </div>
-      </td>
-    </tr>`,
+            (q) =>
+              `<tr><td><span class="q-order-badge">${q.sort_order || "–"}</span></td><td class="td-primary" style="max-width:380px">${q.question_text}</td><td><span class="type-tag type-${q.question_type}">${q.question_type === "binary" ? "Binary" : "Range 1–5"}</span></td><td><div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="openEditQ('${q.id}')"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit</button><button class="btn btn-danger btn-sm" onclick="confirmDelete('question','${q.id}','this question')"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></div></td></tr>`,
           )
           .join("");
       }
@@ -1910,17 +1882,8 @@
         }
         tbody.innerHTML = allBranches
           .map(
-            (b, i) => `<tr>
-      <td>${i + 1}</td>
-      <td class="td-primary">${b.branch_name}</td>
-      <td><span class="badge-pill badge-blue">${branchCounts[b.branch_name] || 0} ratings</span></td>
-      <td>
-        <button class="btn btn-danger btn-sm" onclick="confirmDelete('branch','${b.id}','${b.branch_name}')">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          Delete
-        </button>
-      </td>
-    </tr>`,
+            (b, i) =>
+              `<tr><td>${i + 1}</td><td class="td-primary">${b.branch_name}</td><td><span class="badge-pill badge-blue">${branchCounts[b.branch_name] || 0} ratings</span></td><td><button class="btn btn-danger btn-sm" onclick="confirmDelete('branch','${b.id}','${b.branch_name}')"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></td></tr>`,
           )
           .join("");
       }
@@ -1944,13 +1907,14 @@
         loadBranchesPanel();
       }
 
-      // ── RATINGS ──
+      // ── ALL RATINGS ── (FIXED)
       async function loadRatings() {
-        const tbody = document.getElementById("ratingsTableBody");
+        // ✅ FIX 1: Correct element ID (was "ratingsTableBody", should be "ratingTableBody")
+        const tbody = document.getElementById("ratingTableBody");
         tbody.innerHTML =
           '<tr><td colspan="7"><div class="spinner"></div></td></tr>';
 
-        // Populate filter dropdowns
+        // Populate filter dropdowns only once
         const fDriver = document.getElementById("filterDriver");
         const fBranch = document.getElementById("filterBranch");
         if (fDriver.options.length === 1) {
@@ -1970,25 +1934,36 @@
           });
         }
 
+        // ✅ FIX 2: Build query properly
         let query = db
           .from("ratings")
           .select("*")
           .order("created_at", { ascending: false })
-          .limit(100);
+          .limit(200);
         const dFilter = fDriver.value;
         const bFilter = fBranch.value;
         if (dFilter) query = query.eq("driver_id", dFilter);
         if (bFilter) query = query.eq("branch", bFilter);
 
         const { data, error } = await query;
+
         if (error) {
           tbody.innerHTML =
-            '<tr class="empty-row"><td colspan="7">Failed to load</td></tr>';
+            '<tr class="empty-row"><td colspan="7">Failed to load: ' +
+            error.message +
+            "</td></tr>";
           return;
         }
 
+        // Keep allRatings in sync (needed for dashboard stats)
+        if (!fDriver.value && !fBranch.value) {
+          allRatings = data;
+        }
+
+        // ✅ FIX 3: Correct element ID for count (was "ratingsCount")
         document.getElementById("ratingsCount").textContent =
           `${data.length} submission${data.length !== 1 ? "s" : ""}`;
+
         const driverMap = Object.fromEntries(
           allDrivers.map((d) => [d.id, d.name]),
         );
@@ -2006,17 +1981,27 @@
               isBad(v.answer),
             ).length;
             const dName = driverMap[r.driver_id] || "Unknown";
-            const date = new Date(r.created_at).toLocaleString();
+            const submittedAt = new Date(r.created_at).toLocaleString();
             const tripDate = r.rating_date || "–";
+            // Safely serialise for inline onclick
+            const rJson = JSON.stringify(r)
+              .replace(/\\/g, "\\\\")
+              .replace(/"/g, "&quot;");
             return `<tr>
-        <td class="td-primary">${dName}</td>
-        <td>${r.branch || "–"}</td>
-        <td>${tripDate}</td>
-        <td>${r.submitted_by || "–"}</td>
-        <td>${issues > 0 ? `<span class="badge-pill badge-red">⚠ ${issues} issue${issues > 1 ? "s" : ""}</span>` : '<span class="badge-pill badge-green">✓ None</span>'}</td>
-        <td style="font-size:12px;color:var(--ink-light)">${date}</td>
-        <td><button class="btn btn-ghost btn-sm" onclick='showRatingDetail(${JSON.stringify(r).replace(/'/g, "&#39;")}, "${dName}")'>View</button></td>
-      </tr>`;
+            <td class="td-primary">${dName}</td>
+            <td>${r.branch || "–"}</td>
+            <td>${tripDate}</td>
+            <td>${r.submitted_by || "–"}</td>
+            <td>${issues > 0 ? `<span class="badge-pill badge-red">⚠ ${issues} issue${issues > 1 ? "s" : ""}</span>` : '<span class="badge-pill badge-green">✓ None</span>'}</td>
+            <td style="font-size:12px;color:var(--ink-light)">${submittedAt}</td>
+            <td>
+              <div style="display:flex;gap:6px">
+                <button class="btn btn-ghost btn-sm" onclick="showRatingDetail(JSON.parse(this.dataset.r), this.dataset.name)" data-r="${rJson}" data-name="${dName}">View</button>
+                <button class="btn btn-ghost btn-sm" style="color:var(--blue);border-color:#bfdbfe" onclick="openEditRating('${r.id}')" title="Edit"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="btn btn-danger btn-sm" onclick="confirmDeleteRating('${r.id}')"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>`;
           })
           .join("");
       }
@@ -2032,13 +2017,7 @@
           const ans = resp[q.id];
           if (!ans) return;
           const bad = isBad(ans.answer);
-          html += `<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px">
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:600;color:var(--ink-mid)">${q.question_text}</div>
-          ${ans.note ? `<div style="font-size:11px;color:var(--ink-ghost);margin-top:3px;font-style:italic">Note: ${ans.note}</div>` : ""}
-        </div>
-        <span class="badge-pill ${bad ? "badge-red" : "badge-green"}">${ans.answer || "Skipped"}</span>
-      </div>`;
+          html += `<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--ink-mid)">${q.question_text}</div>${ans.note ? `<div style="font-size:11px;color:var(--ink-ghost);margin-top:3px;font-style:italic">Note: ${ans.note}</div>` : ""}</div><span class="badge-pill ${bad ? "badge-red" : "badge-green"}">${ans.answer || "Skipped"}</span></div>`;
         });
         if (!Object.keys(resp).length)
           html +=
@@ -2048,7 +2027,7 @@
         openModal("ratingDetailModal");
       }
 
-      // ── DELETE ──
+      // ── DELETE (drivers/questions/branches) ──
       function confirmDelete(type, id, label) {
         document.getElementById("confirmTitle").textContent =
           `Delete ${type === "driver" ? "Driver" : type === "question" ? "Question" : "Branch"}?`;
@@ -2090,46 +2069,164 @@
         document.getElementById("branchBadge").textContent = allBranches.length;
       }
 
+      // ── DELETE RATING ──
+      let _pendingDeleteId = null;
+
+      function confirmDeleteRating(id) {
+        _pendingDeleteId = id;
+        const btn = document.getElementById("confirmDeleteBtn");
+        btn.disabled = false;
+        btn.textContent = "Delete Now";
+        openModal("deleteModal");
+      }
+
+      async function executeDeleteRating() {
+        const id = _pendingDeleteId;
+        if (!id) return;
+        const btn = document.getElementById("confirmDeleteBtn");
+        btn.disabled = true;
+        btn.textContent = "Deleting…";
+        const { error } = await db.from("ratings").delete().eq("id", id);
+        if (!error) {
+          _pendingDeleteId = null;
+          allRatings = allRatings.filter((r) => r.id !== id);
+          closeModal("deleteModal");
+          await loadRatings();
+          loadDashboard();
+        } else {
+          alert("Error deleting: " + error.message);
+          btn.disabled = false;
+          btn.textContent = "Delete Now";
+        }
+      }
+
+      // ── EDIT RATING ──
+      function openEditRating(id) {
+        const r = allRatings.find((x) => x.id === id);
+        if (!r) return;
+
+        document.getElementById("editRatingId").value = id;
+        document.getElementById("editRatingDate").value = r.rating_date || "";
+        document.getElementById("editRatingSubmittedBy").value =
+          r.submitted_by || "";
+        document.getElementById("editRatingStatus").style.display = "none";
+
+        // Populate driver dropdown
+        const dSel = document.getElementById("editRatingDriver");
+        dSel.innerHTML = allDrivers
+          .map(
+            (d) =>
+              `<option value="${d.id}" ${d.id === r.driver_id ? "selected" : ""}>${d.name}</option>`,
+          )
+          .join("");
+
+        // Populate branch dropdown
+        const bSel = document.getElementById("editRatingBranch");
+        bSel.innerHTML = allBranches
+          .map(
+            (b) =>
+              `<option value="${b.branch_name}" ${b.branch_name === r.branch ? "selected" : ""}>${b.branch_name}</option>`,
+          )
+          .join("");
+
+        const btn = document.getElementById("saveRatingBtn");
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Save Changes`;
+
+        openModal("editRatingModal");
+      }
+
+      async function saveEditRating() {
+        const id = document.getElementById("editRatingId").value;
+        const driver_id = document.getElementById("editRatingDriver").value;
+        const branch = document.getElementById("editRatingBranch").value;
+        const rating_date = document
+          .getElementById("editRatingDate")
+          .value.trim();
+        const submitted_by = document
+          .getElementById("editRatingSubmittedBy")
+          .value.trim();
+
+        if (!driver_id || !branch) {
+          showStatus(
+            "editRatingStatus",
+            "Driver and Branch are required.",
+            "err",
+          );
+          return;
+        }
+
+        const btn = document.getElementById("saveRatingBtn");
+        btn.disabled = true;
+        btn.textContent = "Saving…";
+
+        const { error } = await db
+          .from("ratings")
+          .update({
+            driver_id,
+            branch,
+            rating_date: rating_date || null,
+            submitted_by,
+          })
+          .eq("id", id);
+
+        if (error) {
+          showStatus("editRatingStatus", "Error: " + error.message, "err");
+          btn.disabled = false;
+          btn.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Save Changes`;
+          return;
+        }
+
+        // Update local cache
+        const idx = allRatings.findIndex((r) => r.id === id);
+        if (idx !== -1) {
+          allRatings[idx] = {
+            ...allRatings[idx],
+            driver_id,
+            branch,
+            rating_date: rating_date || null,
+            submitted_by,
+          };
+        }
+
+        showStatus("editRatingStatus", "✓ Saved!", "ok");
+        setTimeout(() => {
+          closeModal("editRatingModal");
+          loadRatings();
+          loadDashboard();
+        }, 900);
+      }
+
       // ── REPORT ──
-      let reportData = []; // raw rows for CSV / filtering
+      let reportData = [];
 
       async function loadReport() {
         const tbody = document.getElementById("reportTableBody");
         const totalCols = 5 + allQuestions.length * 2;
         tbody.innerHTML = `<tr><td colspan="${totalCols}"><div class="spinner"></div></td></tr>`;
-
-        // Sort questions once
         const qs = allQuestions
           .slice()
           .sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
-
-        // Build dynamic table header
         const headRow = document.getElementById("reportTableHead");
-        // Remove existing Q/Note headers beyond the first 5 static ones
         while (headRow.children.length > 5)
           headRow.removeChild(headRow.lastChild);
         qs.forEach((q, i) => {
           const thQ = document.createElement("th");
           thQ.textContent = `Q${i + 1}`;
-          thQ.title = q.text || "";
+          thQ.title = q.question_text || "";
           headRow.appendChild(thQ);
           const thN = document.createElement("th");
           thN.textContent = `Noted Q${i + 1}`;
           headRow.appendChild(thN);
         });
-
-        // Fetch all ratings
         const { data, error } = await db
           .from("ratings")
           .select("*")
           .order("created_at", { ascending: false });
-
         if (error) {
           tbody.innerHTML = `<tr class="empty-row"><td colspan="${totalCols}">Failed to load data</td></tr>`;
           return;
         }
-
-        // Populate month filter from available data
         const monthSel = document.getElementById("reportMonthFilter");
         const currentVal = monthSel.value;
         const months = [
@@ -2142,8 +2239,6 @@
         ]
           .sort()
           .reverse();
-
-        // Rebuild month options preserving current selection
         monthSel.innerHTML = '<option value="">All Months</option>';
         months.forEach((m) => {
           const [yr, mo] = m.split("-");
@@ -2157,21 +2252,19 @@
           if (m === currentVal) opt.selected = true;
           monthSel.appendChild(opt);
         });
-
-        // Filter by selected month
         const selMonth = monthSel.value;
         const filtered = selMonth
           ? (data || []).filter((r) => {
               const d = new Date(r.created_at);
-              const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-              return key === selMonth;
+              return (
+                `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}` ===
+                selMonth
+              );
             })
           : data || [];
-
         const driverMap = Object.fromEntries(
           allDrivers.map((d) => [d.id, d.name]),
         );
-
         reportData = filtered.map((r) => {
           const resp = r.responses || {};
           const row = {
@@ -2181,7 +2274,6 @@
             branch: r.branch || "–",
             date: r.rating_date || "–",
           };
-          // Dynamically map ALL questions, not just 12
           qs.forEach((q, i) => {
             const ans = resp[q.id] || {};
             row[`q${i + 1}`] = ans.answer ?? "–";
@@ -2190,7 +2282,6 @@
           row._qCount = qs.length;
           return row;
         });
-
         renderReportTable(reportData);
       }
 
@@ -2200,12 +2291,10 @@
         const totalCols = 5 + qCount * 2;
         document.getElementById("reportCount").textContent =
           `${rows.length} submission${rows.length !== 1 ? "s" : ""}`;
-
         if (!rows.length) {
           tbody.innerHTML = `<tr class="empty-row"><td colspan="${totalCols}">No records found</td></tr>`;
           return;
         }
-
         tbody.innerHTML = rows
           .map((r) => {
             let qCells = "";
@@ -2216,14 +2305,7 @@
               qCells += `<td><span class="badge-pill ${bad ? "badge-red" : ans === "–" ? "badge-gray" : "badge-green"}" style="white-space:nowrap">${ans}</span></td>`;
               qCells += `<td style="font-size:11px;color:var(--ink-light);max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${note}">${note || "–"}</td>`;
             }
-            return `<tr>
-            <td style="white-space:nowrap;font-size:12px;color:var(--ink-light)">${r.timestamp}</td>
-            <td class="td-primary" style="white-space:nowrap">${r.username}</td>
-            <td style="white-space:nowrap;font-weight:600">${r.driver}</td>
-            <td style="white-space:nowrap">${r.branch}</td>
-            <td style="white-space:nowrap">${r.date}</td>
-            ${qCells}
-          </tr>`;
+            return `<tr><td style="white-space:nowrap;font-size:12px;color:var(--ink-light)">${r.timestamp}</td><td class="td-primary" style="white-space:nowrap">${r.username}</td><td style="white-space:nowrap;font-weight:600">${r.driver}</td><td style="white-space:nowrap">${r.branch}</td><td style="white-space:nowrap">${r.date}</td>${qCells}</tr>`;
           })
           .join("");
       }
@@ -2237,14 +2319,15 @@
           renderReportTable(reportData);
           return;
         }
-        const filtered = reportData.filter(
-          (r) =>
-            r.username.toLowerCase().includes(q) ||
-            r.driver.toLowerCase().includes(q) ||
-            r.branch.toLowerCase().includes(q) ||
-            r.date.toLowerCase().includes(q),
+        renderReportTable(
+          reportData.filter(
+            (r) =>
+              r.username.toLowerCase().includes(q) ||
+              r.driver.toLowerCase().includes(q) ||
+              r.branch.toLowerCase().includes(q) ||
+              r.date.toLowerCase().includes(q),
+          ),
         );
-        renderReportTable(filtered);
       }
 
       function exportReportCSV() {
@@ -2256,51 +2339,30 @@
           .slice()
           .sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
         const qCount = qs.length;
-
-        const staticHeaders = [
-          "Timestamp",
-          "Username",
-          "Driver",
-          "Branch",
-          "Date",
-        ];
-        const qHeaders = [];
+        const headers = ["Timestamp", "Username", "Driver", "Branch", "Date"];
         for (let i = 1; i <= qCount; i++) {
-          qHeaders.push(`Q${i}`, `Noted Q${i}`);
+          headers.push(`Q${i}`, `Noted Q${i}`);
         }
-        const headers = [...staticHeaders, ...qHeaders];
-
         const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
         const rows = reportData.map((r) => {
-          const staticVals = [
-            r.timestamp,
-            r.username,
-            r.driver,
-            r.branch,
-            r.date,
-          ];
-          const qVals = [];
+          const vals = [r.timestamp, r.username, r.driver, r.branch, r.date];
           for (let i = 1; i <= qCount; i++) {
-            qVals.push(r[`q${i}`] ?? "–", r[`note${i}`] ?? "");
+            vals.push(r[`q${i}`] ?? "–", r[`note${i}`] ?? "");
           }
-          return [...staticVals, ...qVals].map(esc).join(",");
+          return vals.map(esc).join(",");
         });
-
         const csv = [headers.map(esc).join(","), ...rows].join("\r\n");
         const blob = new Blob(["\uFEFF" + csv], {
           type: "text/csv;charset=utf-8;",
         });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
-        const selMonth =
-          document.getElementById("reportMonthFilter").value || "all";
         a.href = url;
-        a.download = `rating-log-${selMonth}.csv`;
+        a.download = `rating-log-${document.getElementById("reportMonthFilter").value || "all"}.csv`;
         a.click();
         URL.revokeObjectURL(url);
       }
 
-      // Close modals on overlay click
       document.querySelectorAll(".modal-overlay").forEach((el) => {
         el.addEventListener("click", (e) => {
           if (e.target === el) el.classList.remove("active");
