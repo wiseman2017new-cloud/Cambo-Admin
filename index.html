@@ -1304,7 +1304,11 @@
                   </div>
                 </div>
                 <div class="filter-actions">
-                  <button class="btn-clear" onclick="document.getElementById('dashDateFrom').value='';document.getElementById('dashDateTo').value='';loadDashboard();">
+                  <button class="btn btn-ghost btn-sm" id="btnThisMonth" onclick="setDashThisMonth()" style="height:38px;border-radius:10px;font-size:12px;gap:5px">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    This Month
+                  </button>
+                  <button class="btn-clear" onclick="document.getElementById('dashDateFrom').value='';document.getElementById('dashDateTo').value='';document.getElementById('btnThisMonth').classList.remove('btn-primary');document.getElementById('btnThisMonth').classList.add('btn-ghost');loadDashboard();">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     Clear
                   </button>
@@ -1846,6 +1850,10 @@
                   </tbody>
                 </table>
               </div>
+              <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--card)">
+                <div style="font-size:13px;color:var(--ink-mid)" id="reportPaginationText">Showing 0–0 of 0 submissions</div>
+                <div style="display:flex;gap:8px" id="reportPaginationControls"></div>
+              </div>
             </div>
           </div>
           <div class="panel" id="panel-performance">
@@ -1919,22 +1927,31 @@
                   <div class="section-title">Driver Performance by Question</div>
                   <div class="section-sub" id="perfCount">Loading…</div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="exportPerformanceCSV()">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Export CSV
-                </button>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div id="perfPaginationInfo" style="font-size:13px;color:var(--ink-mid)"></div>
+                  <button class="btn btn-primary btn-sm" onclick="exportPerformanceCSV()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Export CSV
+                  </button>
+                </div>
               </div>
               <div class="tbl-wrap" style="overflow-x:auto">
                 <table id="perfTable" style="min-width:900px">
                   <thead>
                     <tr id="perfTableHead">
                       <th>Driver</th>
-                      <th>Trips</th>
+                      <th style="text-align:center;background:#eff6ff;color:#1e40af">Overall Avg</th>
+                      <th style="text-align:center;background:#fff7ed;color:#92400e">Total Issues</th>
+                      <th style="text-align:center">Trips</th>
                     </tr>
                   </thead>
                   <tbody id="perfTableBody">
-                    <tr><td colspan="2"><div class="spinner"></div></td></tr>
+                    <tr><td colspan="4"><div class="spinner"></div></td></tr>
                   </tbody>
                 </table>
+              </div>
+              <div style="padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--card)">
+                <div style="font-size:13px;color:var(--ink-mid)" id="perfPaginationText">Showing 0–0 of 0 drivers</div>
+                <div style="display:flex;gap:8px" id="perfPaginationControls"></div>
               </div>
             </div>
           </div>
@@ -2145,6 +2162,27 @@
       let ratingsCurrentPage = 1;
       const ratingsPageSize = 10;
 
+      let perfCurrentPage = 1;
+      const perfPageSize = 100;
+      let _perfEntries = [];
+
+      let reportCurrentPage = 1;
+      const reportPageSize = 100;
+
+      function setDashThisMonth() {
+        const now = new Date();
+        const yr = now.getFullYear();
+        const mo = String(now.getMonth() + 1).padStart(2, "0");
+        const firstDay = `${yr}-${mo}-01`;
+        const lastDayDate = new Date(yr, now.getMonth() + 1, 0);
+        const lastDayStr = `${yr}-${mo}-${String(lastDayDate.getDate()).padStart(2, "0")}`;
+        document.getElementById("dashDateFrom").value = firstDay;
+        document.getElementById("dashDateTo").value = lastDayStr;
+        const btn = document.getElementById("btnThisMonth");
+        if (btn) { btn.classList.remove("btn-ghost"); btn.classList.add("btn-primary"); }
+        loadDashboard();
+      }
+
       const pageMeta = {
         dashboard: ["Dashboard", "Overview of driver rating activity"],
         charts: [
@@ -2271,7 +2309,17 @@
       }
 
       // ── DASHBOARD ──
+      let _dashMonthAutoSet = false;
       async function loadDashboard() {
+        // Auto-select current month on first open
+        if (!_dashMonthAutoSet) {
+          _dashMonthAutoSet = true;
+          const dashFrom = document.getElementById("dashDateFrom");
+          if (dashFrom && !dashFrom.value) {
+            setDashThisMonth();
+            return; // setDashThisMonth calls loadDashboard again
+          }
+        }
         const [dRes, bRes, rRes] = await Promise.all([
           db.from("drivers").select("*").order("name"),
           db.from("branches").select("*").order("branch_name"),
@@ -3181,9 +3229,8 @@
       }
 
       // ── REPORT ──
-      let reportData = [];
-
       async function loadReport() {
+        reportCurrentPage = 1;
         const tbody = document.getElementById("reportTableBody");
         const totalCols = 5 + allQuestions.length * 2;
         tbody.innerHTML = `<tr><td colspan="${totalCols}"><div class="spinner"></div></td></tr>`;
@@ -3282,9 +3329,22 @@
           `${rows.length} submission${rows.length !== 1 ? "s" : ""}`;
         if (!rows.length) {
           tbody.innerHTML = `<tr class="empty-row"><td colspan="${totalCols}">No records found</td></tr>`;
+          document.getElementById("reportPaginationText").textContent = "Showing 0–0 of 0 submissions";
+          document.getElementById("reportPaginationControls").innerHTML = "";
           return;
         }
-        tbody.innerHTML = rows
+
+        // Pagination
+        const totalPages = Math.ceil(rows.length / reportPageSize);
+        if (reportCurrentPage > totalPages) reportCurrentPage = 1;
+        const start = (reportCurrentPage - 1) * reportPageSize;
+        const end = Math.min(start + reportPageSize, rows.length);
+        const pageRows = rows.slice(start, end);
+
+        document.getElementById("reportPaginationText").textContent = `Showing ${start + 1}–${end} of ${rows.length} submissions`;
+        renderReportPagination(totalPages, rows);
+
+        tbody.innerHTML = pageRows
           .map((r) => {
             let qCells = "";
             for (let i = 1; i <= qCount; i++) {
@@ -3299,11 +3359,30 @@
           .join("");
       }
 
+      function renderReportPagination(totalPages, rows) {
+        const controlsEl = document.getElementById("reportPaginationControls");
+        let html = `<button class="btn btn-ghost btn-sm" ${reportCurrentPage === 1 ? "disabled" : ""} onclick="changeReportPage(${reportCurrentPage - 1})">Previous</button>`;
+        let sp = Math.max(1, reportCurrentPage - 2);
+        let ep = Math.min(totalPages, sp + 4);
+        if (ep - sp < 4) sp = Math.max(1, ep - 4);
+        for (let p = sp; p <= ep; p++) {
+          html += `<button class="btn btn-sm ${p === reportCurrentPage ? "btn-primary" : "btn-ghost"}" onclick="changeReportPage(${p})">${p}</button>`;
+        }
+        html += `<button class="btn btn-ghost btn-sm" ${reportCurrentPage === totalPages || totalPages === 0 ? "disabled" : ""} onclick="changeReportPage(${reportCurrentPage + 1})">Next</button>`;
+        controlsEl.innerHTML = html;
+      }
+
+      function changeReportPage(page) {
+        reportCurrentPage = page;
+        renderReportTable(reportData);
+      }
+
       function filterReportTable() {
         const q = document
           .getElementById("reportSearch")
           .value.toLowerCase()
           .trim();
+        reportCurrentPage = 1;
         if (!q) {
           renderReportTable(reportData);
           return;
@@ -3390,6 +3469,7 @@
       }
 
       function renderPerformanceTable() {
+        perfCurrentPage = 1;
         const dFilter = document.getElementById("perfFilterDriver")?.value || "";
         const bFilter = document.getElementById("perfFilterBranch")?.value || "";
         const dateFrom = document.getElementById("perfDateFrom")?.value || "";
@@ -3408,9 +3488,17 @@
           return true;
         });
 
-        // Build head row — range → avg column only; binary → issues column only
+        // Build head row — Overall Avg + Total Issues right after Name, then individual Qs, then Trips
         const headRow = document.getElementById("perfTableHead");
-        headRow.innerHTML = '<th>Driver</th><th style="text-align:center">Trips</th>';
+        headRow.innerHTML = '<th>Driver</th>';
+        const thTotal1 = document.createElement("th");
+        thTotal1.style.cssText = "text-align:center;background:#eff6ff;color:#1e40af";
+        thTotal1.innerHTML = '<div style="font-size:10px;font-weight:700">Overall Avg</div><div style="font-size:9px;opacity:.7">Range Qs only</div>';
+        headRow.appendChild(thTotal1);
+        const thTotal2 = document.createElement("th");
+        thTotal2.style.cssText = "text-align:center;background:#fff7ed;color:#92400e";
+        thTotal2.innerHTML = '<div style="font-size:10px;font-weight:700">Total Issues</div><div style="font-size:9px;opacity:.7">Binary Qs only</div>';
+        headRow.appendChild(thTotal2);
         qs.forEach((q, i) => {
           const isRange = q.question_type !== "binary";
           const th = document.createElement("th");
@@ -3425,16 +3513,12 @@
           }
           headRow.appendChild(th);
         });
-        const thTotal1 = document.createElement("th");
-        thTotal1.style.cssText = "text-align:center;background:#eff6ff;color:#1e40af";
-        thTotal1.innerHTML = '<div style="font-size:10px;font-weight:700">Overall Avg</div><div style="font-size:9px;opacity:.7">Range Qs only</div>';
-        headRow.appendChild(thTotal1);
-        const thTotal2 = document.createElement("th");
-        thTotal2.style.cssText = "text-align:center;background:#fff7ed;color:#92400e";
-        thTotal2.innerHTML = '<div style="font-size:10px;font-weight:700">Total Issues</div><div style="font-size:9px;opacity:.7">Binary Qs only</div>';
-        headRow.appendChild(thTotal2);
+        const thTrips = document.createElement("th");
+        thTrips.style.cssText = "text-align:center";
+        thTrips.textContent = "Trips";
+        headRow.appendChild(thTrips);
 
-        // Aggregate per driver — track question type separately
+        // Aggregate per driver
         const driverData = {};
         allDrivers.forEach(d => {
           driverData[d.id] = { name: driverMap[d.id] || "Unknown", trips: 0, qStats: {} };
@@ -3458,30 +3542,60 @@
                 driverData[r.driver_id].qStats[q.id].count++;
               }
             } else {
-              // binary: count issues (NOT OKAY)
               if (isBad(ans.answer)) {
                 driverData[r.driver_id].qStats[q.id].issues++;
               }
-              // count total binary responses to track participation
               driverData[r.driver_id].qStats[q.id].count++;
             }
           });
         });
 
-        const entries = Object.values(driverData)
+        _perfEntries = Object.values(driverData)
           .filter(d => dFilter ? d.trips > 0 : true)
           .sort((a, b) => b.trips - a.trips);
 
+        const activeCount = _perfEntries.filter(e=>e.trips>0).length;
         document.getElementById("perfCount").textContent =
-          `${entries.filter(e=>e.trips>0).length} driver${entries.filter(e=>e.trips>0).length!==1?"s":""} · ${ratings.length} submission${ratings.length!==1?"s":""}`;
+          `${activeCount} driver${activeCount!==1?"s":""} · ${ratings.length} submission${ratings.length!==1?"s":""}`;
 
+        if (perfCurrentPage > Math.ceil(_perfEntries.length / perfPageSize)) perfCurrentPage = 1;
+        renderPerformancePage();
+      }
+
+      function renderPerformancePage() {
+        const qs = _perfQuestions;
         const tbody = document.getElementById("perfTableBody");
-        if (!entries.length || entries.every(e => e.trips === 0)) {
-          tbody.innerHTML = `<tr class="empty-row"><td colspan="${2 + qs.length + 2}">No data found</td></tr>`;
+        const totalCount = _perfEntries.length;
+        const totalPages = Math.ceil(totalCount / perfPageSize);
+        const start = (perfCurrentPage - 1) * perfPageSize;
+        const end = Math.min(start + perfPageSize, totalCount);
+        const pageEntries = _perfEntries.slice(start, end);
+
+        // Pagination UI
+        const textEl = document.getElementById("perfPaginationText");
+        const controlsEl = document.getElementById("perfPaginationControls");
+        if (totalCount === 0) {
+          textEl.textContent = "Showing 0–0 of 0 drivers";
+          controlsEl.innerHTML = "";
+        } else {
+          textEl.textContent = `Showing ${start+1}–${end} of ${totalCount} drivers`;
+          let html = `<button class="btn btn-ghost btn-sm" ${perfCurrentPage === 1 ? "disabled" : ""} onclick="changePerfPage(${perfCurrentPage - 1})">Previous</button>`;
+          let sp = Math.max(1, perfCurrentPage - 2);
+          let ep = Math.min(totalPages, sp + 4);
+          if (ep - sp < 4) sp = Math.max(1, ep - 4);
+          for (let p = sp; p <= ep; p++) {
+            html += `<button class="btn btn-sm ${p === perfCurrentPage ? "btn-primary" : "btn-ghost"}" onclick="changePerfPage(${p})">${p}</button>`;
+          }
+          html += `<button class="btn btn-ghost btn-sm" ${perfCurrentPage === totalPages || totalPages === 0 ? "disabled" : ""} onclick="changePerfPage(${perfCurrentPage + 1})">Next</button>`;
+          controlsEl.innerHTML = html;
+        }
+
+        if (!pageEntries.length || _perfEntries.every(e => e.trips === 0)) {
+          tbody.innerHTML = `<tr class="empty-row"><td colspan="${3 + qs.length}">No data found</td></tr>`;
           return;
         }
 
-        tbody.innerHTML = entries.map(d => {
+        tbody.innerHTML = pageEntries.map(d => {
           let rangeSum = 0, rangeCount = 0, binaryIssues = 0;
 
           let qCells = "";
@@ -3502,12 +3616,18 @@
 
           const overallAvg = rangeCount ? (rangeSum / rangeCount) : null;
           const ovCol = overallAvg === null ? "gray" : scoreColor(overallAvg);
-          qCells += `<td style="text-align:center"><span class="badge-pill badge-${ovCol}" style="font-weight:800">${overallAvg === null ? "–" : overallAvg.toFixed(1)}</span></td>`;
-          qCells += `<td style="text-align:center">${binaryIssues > 0 ? `<span class="badge-pill badge-red" style="font-weight:800">⚠ ${binaryIssues}</span>` : `<span class="badge-pill badge-green">✓ 0</span>`}</td>`;
+          // Overall Avg and Total Issues come right after name (before Q cols)
+          const summaryAvg = `<td style="text-align:center"><span class="badge-pill badge-${ovCol}" style="font-weight:800">${overallAvg === null ? "–" : overallAvg.toFixed(1)}</span></td>`;
+          const summaryIssues = `<td style="text-align:center">${binaryIssues > 0 ? `<span class="badge-pill badge-red" style="font-weight:800">⚠ ${binaryIssues}</span>` : `<span class="badge-pill badge-green">✓ 0</span>`}</td>`;
 
           const trStyle = d.trips === 0 ? 'style="opacity:.4"' : '';
-          return `<tr ${trStyle}><td class="td-primary" style="white-space:nowrap">${d.name}</td><td style="text-align:center"><span class="badge-pill badge-blue">${d.trips}</span></td>${qCells}</tr>`;
+          return `<tr ${trStyle}><td class="td-primary" style="white-space:nowrap">${d.name}</td>${summaryAvg}${summaryIssues}${qCells}<td style="text-align:center"><span class="badge-pill badge-blue">${d.trips}</span></td></tr>`;
         }).join("");
+      }
+
+      function changePerfPage(page) {
+        perfCurrentPage = page;
+        renderPerformancePage();
       }
 
       function exportPerformanceCSV() {
