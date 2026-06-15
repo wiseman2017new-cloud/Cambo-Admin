@@ -1232,12 +1232,7 @@
             Report
           </button>
         </nav>
-        <div class="sidebar-footer">
-          <button onclick="handleSignOut()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);color:rgba(255,100,100,0.85);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-            Sign Out
-          </button>
-        </div>Connected to Supabase · v1.0</div>
+        <div class="sidebar-footer">Connected to Supabase · v1.0</div>
       </aside>
 
       <div class="main">
@@ -2159,34 +2154,6 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
       const db = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // ── AUTH GUARD ── restore session then init
-      document.documentElement.style.visibility = "hidden";
-
-      async function handleSignOut() {
-        await db.auth.signOut();
-        window.location.replace("index.html");
-      }
-
-      (async () => {
-        try {
-          const { data: { session }, error } = await db.auth.getSession();
-          if (error || !session) {
-            window.location.replace("index.html");
-            return;
-          }
-          // Re-set session so every DB query sends the JWT and passes RLS
-          await db.auth.setSession({
-            access_token: session.access_token,
-            refresh_token: session.refresh_token,
-          });
-          document.documentElement.style.visibility = "";
-          init();
-        } catch (e) {
-          console.error("Auth guard error:", e);
-          window.location.replace("index.html");
-        }
-      })();
-
       let allDrivers = [],
         allBranches = [],
         allQuestions = [],
@@ -2324,32 +2291,21 @@
       }
 
       async function init() {
-        try {
-          const [dRes, qRes, bRes, rRes] = await Promise.all([
-            db.from("drivers").select("*").order("name"),
-            db.from("questions").select("*").order("sort_order"),
-            db.from("branches").select("*").order("branch_name"),
-            db.from("ratings").select("*").order("created_at", { ascending: false }),
-          ]);
-
-          // Log any RLS/DB errors to console for debugging
-          if (dRes.error) console.error("drivers error:", dRes.error);
-          if (qRes.error) console.error("questions error:", qRes.error);
-          if (bRes.error) console.error("branches error:", bRes.error);
-          if (rRes.error) console.error("ratings error:", rRes.error);
-
-          allDrivers = dRes.data || [];
-          allQuestions = qRes.data || [];
-          allBranches = bRes.data || [];
-          allRatings = rRes.data || [];
-
-          console.log(`Loaded: ${allDrivers.length} drivers, ${allQuestions.length} questions, ${allBranches.length} branches, ${allRatings.length} ratings`);
-
-          updateAllBadges();
-          loadDashboard();
-        } catch (e) {
-          console.error("init() failed:", e);
-        }
+        const [dRes, qRes, bRes, rRes] = await Promise.all([
+          db.from("drivers").select("*").order("name"),
+          db.from("questions").select("*").order("sort_order"),
+          db.from("branches").select("*").order("branch_name"),
+          db
+            .from("ratings")
+            .select("*")
+            .order("created_at", { ascending: false }),
+        ]);
+        allDrivers = dRes.data || [];
+        allQuestions = qRes.data || [];
+        allBranches = bRes.data || [];
+        allRatings = rRes.data || [];
+        updateAllBadges();
+        loadDashboard();
       }
 
       // ── DASHBOARD ──
@@ -3755,6 +3711,7 @@
         });
       });
 
+      init();
     </script>
   </body>
 </html>
