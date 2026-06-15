@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Driver Rating — Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --ink: #0d0f12;
+        --ink-mid: #3d4550;
+        --ink-light: #8a93a0;
+        --ink-ghost: #c8cfd8;
+        --surface: #f4f5f7;
+        --card: #ffffff;
+        --border: #e8eaed;
+        --accent: #10b981;
+        --accent-dark: #059669;
+        --accent-glow: rgba(16,185,129,0.15);
+        --red: #ef4444;
+        --red-light: #fef2f2;
+      }
+      html, body {
+        height: 100%;
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        background: var(--ink);
+      }
+
+      /* Background */
+      .bg {
+        position: fixed;
+        inset: 0;
+        background: var(--ink);
+        overflow: hidden;
+      }
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .bg-glow-1 {
+        position: absolute;
+        top: -150px; left: -150px;
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 65%);
+      }
+      .bg-glow-2 {
+        position: absolute;
+        bottom: -100px; right: -100px;
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 65%);
+      }
+
+      /* Page layout */
+      .page {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+      }
+
+      /* Card */
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: var(--card);
+        border-radius: 22px;
+        box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+        overflow: hidden;
+      }
+
+      /* Card top (dark header) */
+      .card-top {
+        background: var(--ink);
+        padding: 32px 36px 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card-top::before {
+        content: "";
+        position: absolute;
+        top: -70px; right: -70px;
+        width: 200px; height: 200px;
+        background: radial-gradient(circle, rgba(16,185,129,0.22) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .logo-row {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 22px;
+      }
+      .logo-icon {
+        width: 38px; height: 38px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        border-radius: 11px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 16px rgba(16,185,129,0.4);
+        flex-shrink: 0;
+      }
+      .logo-icon svg { width: 19px; height: 19px; color: #fff; }
+      .logo-text { }
+      .logo-name {
+        font-family: "Instrument Serif", serif;
+        font-size: 18px;
+        color: #fff;
+        line-height: 1.1;
+      }
+      .logo-sub {
+        font-size: 10px;
+        color: rgba(255,255,255,0.28);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+      .card-headline {
+        font-size: 23px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+      .card-tagline {
+        font-size: 13px;
+        color: rgba(255,255,255,0.38);
+        margin-top: 5px;
+      }
+
+      /* Card body */
+      .card-body {
+        padding: 30px 36px 36px;
+      }
+
+      /* Error banner */
+      .err-banner {
+        display: none;
+        align-items: center;
+        gap: 9px;
+        background: var(--red-light);
+        border: 1px solid rgba(239,68,68,0.18);
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: 13px;
+        color: var(--red);
+        font-weight: 500;
+        margin-bottom: 20px;
+        animation: slideIn .2s ease;
+      }
+      .err-banner.show { display: flex; }
+      .err-banner svg { width: 15px; height: 15px; flex-shrink: 0; }
+      @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Fields */
+      .field { margin-bottom: 18px; }
+      .field-label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--ink-mid);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+      }
+      .input-wrap { position: relative; }
+      .input-icon {
+        position: absolute;
+        left: 13px; top: 50%;
+        transform: translateY(-50%);
+        color: var(--ink-ghost);
+        display: flex;
+        pointer-events: none;
+      }
+      .input-icon svg { width: 15px; height: 15px; }
+      .field input {
+        width: 100%;
+        height: 44px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 0 40px 0 37px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14px;
+        color: var(--ink);
+        background: var(--surface);
+        outline: none;
+        transition: border-color .15s, box-shadow .15s, background .15s;
+        -webkit-appearance: none;
+      }
+      .field input::placeholder { color: var(--ink-ghost); }
+      .field input:focus {
+        border-color: var(--accent);
+        background: #fff;
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+      .field input.invalid {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+      }
+      .pw-eye {
+        position: absolute;
+        right: 11px; top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--ink-ghost);
+        display: flex;
+        padding: 5px;
+        border-radius: 6px;
+        transition: color .15s;
+      }
+      .pw-eye:hover { color: var(--ink-mid); }
+      .pw-eye svg { width: 15px; height: 15px; }
+
+      /* Submit button */
+      .btn-submit {
+        width: 100%;
+        height: 46px;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 18px rgba(16,185,129,0.38);
+        transition: opacity .15s, transform .1s, box-shadow .15s;
+        margin-top: 8px;
+        -webkit-appearance: none;
+      }
+      .btn-submit:hover:not(:disabled) {
+        opacity: .92;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(16,185,129,0.45);
+      }
+      .btn-submit:active:not(:disabled) { transform: translateY(0); }
+      .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+      .btn-submit svg { width: 16px; height: 16px; }
+      .spin {
+        width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin .65s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Footer */
+      .card-footer {
+        text-align: center;
+        font-size: 12px;
+        color: var(--ink-light);
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+      }
+      .card-footer strong { color: var(--ink-mid); }
+
+      /* Success overlay */
+      .success-wrap {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 52px 36px;
+      }
+      .success-wrap.show { display: flex; }
+      .success-circle {
+        width: 64px; height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 28px rgba(16,185,129,0.35);
+        margin-bottom: 18px;
+        animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+      }
+      @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      .success-circle svg { width: 30px; height: 30px; color: #fff; }
+      .success-title { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
+      .success-sub { font-size: 13px; color: var(--ink-light); }
+      .success-note { font-size: 12px; color: var(--ink-ghost); margin-top: 12px; }
+
+      @media (max-width: 480px) {
+        .card-top, .card-body { padding-left: 24px; padding-right: 24px; }
+        .success-wrap { padding: 40px 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <div class="bg-grid"></div>
+      <div class="bg-glow-1"></div>
+      <div class="bg-glow-2"></div>
+    </div>
+
+    <div class="page">
+      <div class="card">
+
+        <!-- Dark header -->
+        <div class="card-top">
+          <div class="logo-row">
+            <div class="logo-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l1 1h10l2-4h2l1 1v3h-1"/>
+              </svg>
+            </div>
+            <div class="logo-text">
+              <div class="logo-name">Driver Rating</div>
+              <div class="logo-sub">Admin Panel</div>
+            </div>
+          </div>
+          <div class="card-headline">Welcome back</div>
+          <div class="card-tagline">Sign in to access the dashboard</div>
+        </div>
+
+        <!-- Login form -->
+        <div class="card-body" id="formWrap">
+          <div class="err-banner" id="errBanner">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span id="errText">Incorrect email or password.</span>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="inp_email">Email address</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </span>
+              <input type="email" id="inp_email" placeholder="admin@example.com" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="inp_pw">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </span>
+              <input type="password" id="inp_pw" placeholder="••••••••" autocomplete="current-password" />
+              <button class="pw-eye" type="button" id="eyeBtn" onclick="toggleEye()" tabindex="-1">
+                <svg id="eyeSvg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-submit" id="submitBtn" onclick="doLogin()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+            </svg>
+            Sign In
+          </button>
+
+          <div class="card-footer">
+            Restricted access &middot; <strong>Authorized admins only</strong>
+          </div>
+        </div>
+
+        <!-- Success screen -->
+        <div class="success-wrap" id="successWrap">
+          <div class="success-circle">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <div class="success-title">Signed in!</div>
+          <div class="success-sub">Welcome back, Admin</div>
+          <div class="success-note">Redirecting to dashboard…</div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      const SUPABASE_URL = "https://vioupfkhpdyfbuatjtxr.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
+      const auth = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // If already logged in, go straight to admin
+      auth.auth.getSession().then(({ data: { session } }) => {
+        if (session) window.location.replace("admin.html");
+      });
+
+      // Enter key triggers login
+      document.addEventListener("keydown", e => {
+        if (e.key === "Enter" && document.getElementById("formWrap").style.display !== "none") {
+          doLogin();
+        }
+      });
+
+      function toggleEye() {
+        const inp = document.getElementById("inp_pw");
+        const svg = document.getElementById("eyeSvg");
+        const isHidden = inp.type === "password";
+        inp.type = isHidden ? "text" : "password";
+        svg.innerHTML = isHidden
+          ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>`
+          : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+      }
+
+      function showErr(msg) {
+        const banner = document.getElementById("errBanner");
+        document.getElementById("errText").textContent = msg;
+        banner.classList.add("show");
+        document.getElementById("inp_email").classList.add("invalid");
+        document.getElementById("inp_pw").classList.add("invalid");
+      }
+
+      function clearErr() {
+        document.getElementById("errBanner").classList.remove("show");
+        document.getElementById("inp_email").classList.remove("invalid");
+        document.getElementById("inp_pw").classList.remove("invalid");
+      }
+
+      function setLoading(on) {
+        const btn = document.getElementById("submitBtn");
+        if (on) {
+          btn.disabled = true;
+          btn.innerHTML = `<div class="spin"></div> Signing in…`;
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg> Sign In`;
+        }
+      }
+
+      async function doLogin() {
+        const email = document.getElementById("inp_email").value.trim();
+        const pw = document.getElementById("inp_pw").value;
+
+        clearErr();
+
+        if (!email) { showErr("Please enter your email address."); return; }
+        if (!pw)    { showErr("Please enter your password."); return; }
+
+        setLoading(true);
+
+        try {
+          const { data, error } = await auth.auth.signInWithPassword({ email, password: pw });
+
+          if (error) {
+            setLoading(false);
+            const msg = (error.message || "").toLowerCase();
+            if (msg.includes("invalid") || msg.includes("credentials")) {
+              showErr("Incorrect email or password. Please try again.");
+            } else {
+              showErr(error.message);
+            }
+            return;
+          }
+
+          // Success — show success screen then redirect
+          document.getElementById("formWrap").style.display = "none";
+          document.getElementById("successWrap").classList.add("show");
+          setTimeout(() => { window.location.replace("admin.html"); }, 1600);
+
+        } catch (err) {
+          setLoading(false);
+          showErr("Connection error. Please try again.");
+        }
+      }
+    </script>
+  </body>
+</html>
