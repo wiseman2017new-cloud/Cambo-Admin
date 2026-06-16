@@ -1245,9 +1245,13 @@
           </div>
           <div class="topbar-right">
             <div class="admin-pill">
-              <div class="admin-avatar">A</div>
-              <span class="admin-name">Admin</span>
+              <div class="admin-avatar" id="adminAvatar">A</div>
+              <span class="admin-name" id="adminName">Admin</span>
             </div>
+            <button onclick="handleLogout()" title="Sign out" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--ink-mid);cursor:pointer;transition:background 0.15s,color 0.15s;" onmouseover="this.style.background='#fef2f2';this.style.color='#dc2626';this.style.borderColor='#fecaca'" onmouseout="this.style.background='var(--card)';this.style.color='var(--ink-mid)';this.style.borderColor='var(--border)'">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              Logout
+            </button>
           </div>
         </div>
 
@@ -2149,10 +2153,33 @@
       </div>
     </div>
     <script>
+      
       const supabaseUrl = "https://vioupfkhpdyfbuatjtxr.supabase.co";
       const supabaseKey =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
       const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+      // ── AUTH GUARD ──
+      // Check session; redirect to login if not authenticated
+      (async () => {
+        const { data: { session } } = await db.auth.getSession();
+        if (!session) {
+          window.location.href = "login.html";
+          return;
+        }
+        // Show logged-in user email in the topbar admin pill
+        const userEmail = session.user.email || "Admin";
+        const initials = userEmail.slice(0, 2).toUpperCase();
+        const avatarEl = document.getElementById("adminAvatar");
+        const nameEl   = document.getElementById("adminName");
+        if (avatarEl) avatarEl.textContent = initials;
+        if (nameEl)   nameEl.textContent   = userEmail;
+      })();
+
+      async function handleLogout() {
+        await db.auth.signOut();
+        window.location.href = "login.html";
+      }
 
       let allDrivers = [],
         allBranches = [],
