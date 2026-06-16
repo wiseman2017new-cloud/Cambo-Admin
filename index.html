@@ -1245,13 +1245,9 @@
           </div>
           <div class="topbar-right">
             <div class="admin-pill">
-              <div class="admin-avatar" id="adminAvatar">A</div>
-              <span class="admin-name" id="adminName">Admin</span>
+              <div class="admin-avatar">A</div>
+              <span class="admin-name">Admin</span>
             </div>
-            <button onclick="handleLogout()" title="Sign out" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--ink-mid);cursor:pointer;transition:background 0.15s,color 0.15s;" onmouseover="this.style.background='#fef2f2';this.style.color='#dc2626';this.style.borderColor='#fecaca'" onmouseout="this.style.background='var(--card)';this.style.color='var(--ink-mid)';this.style.borderColor='var(--border)'">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              Logout
-            </button>
           </div>
         </div>
 
@@ -1687,18 +1683,6 @@
                 <div class="filter-field filter-field-sm">
                   <div class="filter-label">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    Month
-                  </div>
-                  <div class="filter-input-wrap filter-select-wrap">
-                    <svg class="fi-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <select id="filterMonth" onchange="ratingsCurrentPage=1;loadRatings();">
-                      <option value="">All Months</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="filter-field filter-field-sm">
-                  <div class="filter-label">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     Trip Date From
                   </div>
                   <div class="filter-input-wrap">
@@ -1717,7 +1701,7 @@
                   </div>
                 </div>
                 <div class="filter-actions">
-                  <button class="btn-clear" onclick="document.getElementById('filterMonth').value='';document.getElementById('filterDriver').value='';document.getElementById('filterBranch').value='';document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';ratingsCurrentPage=1;loadRatings();">
+                  <button class="btn-clear" onclick="document.getElementById('filterDriver').value='';document.getElementById('filterBranch').value='';document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';ratingsCurrentPage=1;loadRatings();">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     Clear Filters
                   </button>
@@ -1911,18 +1895,6 @@
                 <div class="filter-field filter-field-sm">
                   <div class="filter-label">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    Month
-                  </div>
-                  <div class="filter-input-wrap filter-select-wrap">
-                    <svg class="fi-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <select id="perfFilterMonth" onchange="renderPerformanceTable()">
-                      <option value="">All Months</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="filter-field filter-field-sm">
-                  <div class="filter-label">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     Trip Date From
                   </div>
                   <div class="filter-input-wrap">
@@ -1941,7 +1913,7 @@
                   </div>
                 </div>
                 <div class="filter-actions">
-                  <button class="btn-clear" onclick="document.getElementById('perfFilterDriver').value='';document.getElementById('perfFilterBranch').value='';document.getElementById('perfFilterMonth').value='';document.getElementById('perfDateFrom').value='';document.getElementById('perfDateTo').value='';renderPerformanceTable();">
+                  <button class="btn-clear" onclick="document.getElementById('perfFilterDriver').value='';document.getElementById('perfFilterBranch').value='';document.getElementById('perfDateFrom').value='';document.getElementById('perfDateTo').value='';renderPerformanceTable();">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     Clear Filters
                   </button>
@@ -2177,33 +2149,10 @@
       </div>
     </div>
     <script>
-      
       const supabaseUrl = "https://vioupfkhpdyfbuatjtxr.supabase.co";
       const supabaseKey =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
       const db = supabase.createClient(supabaseUrl, supabaseKey);
-
-      // ── AUTH GUARD ──
-      // Check session; redirect to login if not authenticated
-      (async () => {
-        const { data: { session } } = await db.auth.getSession();
-        if (!session) {
-          window.location.href = "login.html";
-          return;
-        }
-        // Show logged-in user email in the topbar admin pill
-        const userEmail = session.user.email || "Admin";
-        const initials = userEmail.slice(0, 2).toUpperCase();
-        const avatarEl = document.getElementById("adminAvatar");
-        const nameEl   = document.getElementById("adminName");
-        if (avatarEl) avatarEl.textContent = initials;
-        if (nameEl)   nameEl.textContent   = userEmail;
-      })();
-
-      async function handleLogout() {
-        await db.auth.signOut();
-        window.location.href = "login.html";
-      }
 
       let allDrivers = [],
         allBranches = [],
@@ -2219,15 +2168,6 @@
 
       let reportCurrentPage = 1;
       const reportPageSize = 100;
-
-      let _ratingsMonthAutoSet = false;
-      let _perfMonthAutoSet = false;
-      let _reportMonthAutoSet = false;
-
-      function currentYM() {
-        const now = new Date();
-        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-      }
 
       function setDashThisMonth() {
         const now = new Date();
@@ -2540,8 +2480,8 @@
         const selVal = sel?.value || "current";
 
         const now = new Date();
-        const nowYM = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
-        const targetYM = selVal === "current" ? nowYM : selVal;
+        const currentYM = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+        const targetYM = selVal === "current" ? currentYM : selVal;
         const [yr, mo] = targetYM.split("-");
         const monthLabel = new Date(yr, mo-1).toLocaleString("default", { month: "long", year: "numeric" });
 
@@ -2948,52 +2888,10 @@
           });
         }
 
-        // Populate Month select (always includes the current month) and
-        // auto-select the current month the first time this panel is opened.
-        const fMonth = document.getElementById("filterMonth");
-        {
-          const curM = fMonth.value;
-          const months = [
-            ...new Set(
-              allRatings.map((r) => {
-                const d = new Date(r.created_at);
-                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-              }),
-            ),
-          ];
-          if (!months.includes(currentYM())) months.push(currentYM());
-          months.sort().reverse();
-          fMonth.innerHTML = '<option value="">All Months</option>';
-          months.forEach((m) => {
-            const [yr, mo] = m.split("-");
-            const label = new Date(yr, mo - 1).toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-            });
-            const opt = document.createElement("option");
-            opt.value = m;
-            opt.textContent = label;
-            if (m === curM) opt.selected = true;
-            fMonth.appendChild(opt);
-          });
-          if (!_ratingsMonthAutoSet) {
-            _ratingsMonthAutoSet = true;
-            if (!curM) fMonth.value = currentYM();
-          }
-        }
-
         const dFilter = fDriver.value;
         const bFilter = fBranch.value;
         const dateFrom = document.getElementById("filterDateFrom").value;
         const dateTo = document.getElementById("filterDateTo").value;
-        const mFilter = fMonth.value;
-        let monthStart = null,
-          monthEnd = null;
-        if (mFilter) {
-          const [yr, mo] = mFilter.split("-").map(Number);
-          monthStart = new Date(yr, mo - 1, 1).toISOString();
-          monthEnd = new Date(yr, mo, 1).toISOString();
-        }
 
         // Separate count query for accurate total (fixes stuck-at-1000 bug)
         let countQuery = db
@@ -3003,10 +2901,6 @@
         if (bFilter) countQuery = countQuery.eq("branch", bFilter);
         if (dateFrom) countQuery = countQuery.gte("rating_date", dateFrom);
         if (dateTo) countQuery = countQuery.lte("rating_date", dateTo);
-        if (monthStart)
-          countQuery = countQuery
-            .gte("created_at", monthStart)
-            .lt("created_at", monthEnd);
         const { count: totalCount, error: countError } = await countQuery;
         const trueCount = countError ? 0 : (totalCount || 0);
 
@@ -3019,10 +2913,6 @@
         if (bFilter) dataQuery = dataQuery.eq("branch", bFilter);
         if (dateFrom) dataQuery = dataQuery.gte("rating_date", dateFrom);
         if (dateTo) dataQuery = dataQuery.lte("rating_date", dateTo);
-        if (monthStart)
-          dataQuery = dataQuery
-            .gte("created_at", monthStart)
-            .lt("created_at", monthEnd);
 
         const from = (ratingsCurrentPage - 1) * ratingsPageSize;
         const to = from + ratingsPageSize - 1;
@@ -3042,7 +2932,7 @@
           trueCount +
           " submission" +
           (trueCount !== 1 ? "s" : "") +
-          (dFilter || bFilter || dateFrom || dateTo || mFilter ? " (filtered)" : "");
+          (dFilter || bFilter || dateFrom || dateTo ? " (filtered)" : "");
 
         renderPagination(trueCount);
 
@@ -3368,11 +3258,7 @@
           return;
         }
         const monthSel = document.getElementById("reportMonthFilter");
-        let currentVal = monthSel.value;
-        if (!_reportMonthAutoSet) {
-          _reportMonthAutoSet = true;
-          if (!currentVal) currentVal = currentYM();
-        }
+        const currentVal = monthSel.value;
         const months = [
           ...new Set(
             (data || []).map((r) => {
@@ -3380,9 +3266,9 @@
               return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
             }),
           ),
-        ];
-        if (!months.includes(currentYM())) months.push(currentYM());
-        months.sort().reverse();
+        ]
+          .sort()
+          .reverse();
         monthSel.innerHTML = '<option value="">All Months</option>';
         months.forEach((m) => {
           const [yr, mo] = m.split("-");
@@ -3579,37 +3465,6 @@
           bSel.appendChild(o);
         });
 
-        // Populate Month select (always includes the current month) and
-        // auto-select the current month the first time this panel is opened.
-        const mSel = document.getElementById("perfFilterMonth");
-        const curM = mSel.value;
-        const months = [
-          ...new Set(
-            _perfAllRatings.map((r) => {
-              const d = new Date(r.created_at);
-              return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-            }),
-          ),
-        ];
-        if (!months.includes(currentYM())) months.push(currentYM());
-        months.sort().reverse();
-        mSel.innerHTML = '<option value="">All Months</option>';
-        months.forEach((m) => {
-          const [yr, mo] = m.split("-");
-          const label = new Date(yr, mo - 1).toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          });
-          const opt = document.createElement("option");
-          opt.value = m; opt.textContent = label;
-          if (m === curM) opt.selected = true;
-          mSel.appendChild(opt);
-        });
-        if (!_perfMonthAutoSet) {
-          _perfMonthAutoSet = true;
-          if (!curM) mSel.value = currentYM();
-        }
-
         renderPerformanceTable();
       }
 
@@ -3617,7 +3472,6 @@
         perfCurrentPage = 1;
         const dFilter = document.getElementById("perfFilterDriver")?.value || "";
         const bFilter = document.getElementById("perfFilterBranch")?.value || "";
-        const mFilter = document.getElementById("perfFilterMonth")?.value || "";
         const dateFrom = document.getElementById("perfDateFrom")?.value || "";
         const dateTo = document.getElementById("perfDateTo")?.value || "";
 
@@ -3628,11 +3482,6 @@
         let ratings = _perfAllRatings.filter(r => {
           if (dFilter && r.driver_id != dFilter) return false;
           if (bFilter && r.branch !== bFilter) return false;
-          if (mFilter) {
-            const d = new Date(r.created_at);
-            const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-            if (ym !== mFilter) return false;
-          }
           const rd = r.rating_date || "";
           if (dateFrom && rd < dateFrom) return false;
           if (dateTo && rd > dateTo) return false;
@@ -3796,18 +3645,12 @@
         const driverMap = Object.fromEntries(allDrivers.map(d => [d.id, d.name]));
         const dFilter = document.getElementById("perfFilterDriver")?.value || "";
         const bFilter = document.getElementById("perfFilterBranch")?.value || "";
-        const mFilter = document.getElementById("perfFilterMonth")?.value || "";
         const dateFrom = document.getElementById("perfDateFrom")?.value || "";
         const dateTo = document.getElementById("perfDateTo")?.value || "";
 
         let ratings = _perfAllRatings.filter(r => {
           if (dFilter && r.driver_id != dFilter) return false;
           if (bFilter && r.branch !== bFilter) return false;
-          if (mFilter) {
-            const d = new Date(r.created_at);
-            const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-            if (ym !== mFilter) return false;
-          }
           const rd = r.rating_date || "";
           if (dateFrom && rd < dateFrom) return false;
           if (dateTo && rd > dateTo) return false;
