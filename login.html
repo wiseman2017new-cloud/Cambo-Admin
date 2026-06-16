@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Login — Driver Rating Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --ink: #0d0f12;
+        --ink-mid: #3d4550;
+        --ink-light: #8a93a0;
+        --surface: #f4f5f7;
+        --card: #ffffff;
+        --border: #e8eaed;
+        --accent: #10b981;
+        --accent-dark: #059669;
+        --accent-glow: rgba(16, 185, 129, 0.15);
+        --red: #ef4444;
+      }
+      html, body {
+        height: 100%;
+        background: var(--surface);
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Background decoration */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 600px 400px at 20% 20%, rgba(16,185,129,0.07) 0%, transparent 70%),
+          radial-gradient(ellipse 500px 500px at 80% 80%, rgba(59,130,246,0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .login-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .login-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 44px 40px 40px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 4px 24px rgba(13,15,18,0.06), 0 1px 4px rgba(13,15,18,0.04);
+      }
+
+      /* Logo */
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 32px;
+      }
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+        flex-shrink: 0;
+      }
+      .logo-icon svg { width: 18px; height: 18px; color: #fff; }
+      .logo-text-wrap { display: flex; flex-direction: column; }
+      .logo-title {
+        font-family: "Instrument Serif", serif;
+        font-size: 18px;
+        color: var(--ink);
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+      }
+      .logo-sub {
+        font-size: 10px;
+        color: var(--ink-light);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+
+      /* Headings */
+      .login-heading {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .login-sub {
+        font-size: 13px;
+        color: var(--ink-light);
+        margin-bottom: 28px;
+      }
+
+      /* Form */
+      .field { margin-bottom: 18px; }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--ink-mid);
+        margin-bottom: 7px;
+        letter-spacing: 0.01em;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14px;
+        color: var(--ink);
+        background: var(--surface);
+        outline: none;
+        transition: border-color 0.18s, box-shadow 0.18s;
+      }
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+        background: #fff;
+      }
+      input::placeholder { color: var(--ink-light); }
+
+      /* Password wrapper */
+      .pw-wrap { position: relative; }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--ink-light);
+        padding: 4px;
+        display: flex;
+        align-items: center;
+      }
+      .pw-toggle:hover { color: var(--ink-mid); }
+      .pw-toggle svg { width: 17px; height: 17px; }
+
+      /* Forgot link */
+      .forgot-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -10px;
+        margin-bottom: 18px;
+      }
+      .forgot-link {
+        font-size: 12px;
+        color: var(--accent-dark);
+        text-decoration: none;
+        font-weight: 500;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      .forgot-link:hover { text-decoration: underline; }
+
+      /* Submit button */
+      .btn-login {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.18s, transform 0.12s;
+        box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-login:hover { opacity: 0.92; }
+      .btn-login:active { transform: scale(0.99); }
+      .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+      /* Spinner inside button */
+      .btn-spinner {
+        width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Error / info banner */
+      .auth-banner {
+        display: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 16px;
+      }
+      .auth-banner.err {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .auth-banner.ok {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+      }
+
+      /* Reset view (hidden by default) */
+      #resetView { display: none; }
+
+      /* Footer note */
+      .login-footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-light);
+      }
+
+      @media (max-width: 480px) {
+        .login-card { padding: 32px 24px 28px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-wrap">
+      <div class="login-card">
+
+        <!-- Logo -->
+        <div class="logo-area">
+          <div class="logo-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div class="logo-text-wrap">
+            <span class="logo-title">Driver Rating</span>
+            <span class="logo-sub">Admin Panel</span>
+          </div>
+        </div>
+
+        <!-- ── LOGIN VIEW ── -->
+        <div id="loginView">
+          <div class="login-heading">Welcome back</div>
+          <div class="login-sub">Sign in to your admin account</div>
+
+          <div class="field">
+            <label for="loginEmail">Email address</label>
+            <input type="email" id="loginEmail" placeholder="admin@example.com" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+              <button class="pw-toggle" type="button" onclick="togglePw('loginPassword', this)" aria-label="Show password">
+                <svg id="eyeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="forgot-row">
+            <button class="forgot-link" onclick="showResetView()">Forgot password?</button>
+          </div>
+
+          <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+            Sign In
+          </button>
+
+          <div class="auth-banner" id="loginBanner"></div>
+        </div>
+
+        <!-- ── RESET PASSWORD VIEW ── -->
+        <div id="resetView">
+          <div class="login-heading">Reset password</div>
+          <div class="login-sub">Enter your email and we'll send a reset link</div>
+
+          <div class="field">
+            <label for="resetEmail">Email address</label>
+            <input type="email" id="resetEmail" placeholder="admin@example.com" />
+          </div>
+
+          <button class="btn-login" id="resetBtn" onclick="handleReset()">
+            Send Reset Link
+          </button>
+
+          <div class="auth-banner" id="resetBanner"></div>
+
+          <div style="margin-top:16px;text-align:center">
+            <button class="forgot-link" onclick="showLoginView()">← Back to sign in</button>
+          </div>
+        </div>
+
+        <div class="login-footer">Protected admin area · Driver Rating System</div>
+      </div>
+    </div>
+
+    <script>
+      // ── CONFIG — same credentials as your index.html ──
+      const SUPABASE_URL = "https://vioupfkhpdyfbuatjtxr.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpb3VwZmtocGR5ZmJ1YXRqdHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTU0OTcsImV4cCI6MjA5MjkzMTQ5N30.KpQ3syRkSzCyPgkbeVX6OYY8pu13QshL-iQ2F48Vevk";
+      const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // If already logged in, skip to dashboard
+      (async () => {
+        const { data: { session } } = await db.auth.getSession();
+        if (session) window.location.href = "index.html";
+      })();
+
+      // ── LOGIN ──
+      async function handleLogin() {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        const btn = document.getElementById("loginBtn");
+        const banner = document.getElementById("loginBanner");
+
+        if (!email || !password) {
+          showBanner(banner, "Please enter your email and password.", "err");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<div class="btn-spinner"></div> Signing in…';
+        hideBanner(banner);
+
+        const { error } = await db.auth.signInWithPassword({ email, password });
+
+        if (error) {
+          btn.disabled = false;
+          btn.innerHTML = "Sign In";
+          showBanner(banner, error.message || "Invalid credentials. Please try again.", "err");
+        } else {
+          btn.innerHTML = "✓ Redirecting…";
+          window.location.href = "index.html";
+        }
+      }
+
+      // ── PASSWORD RESET ──
+      async function handleReset() {
+        const email = document.getElementById("resetEmail").value.trim();
+        const btn = document.getElementById("resetBtn");
+        const banner = document.getElementById("resetBanner");
+
+        if (!email) {
+          showBanner(banner, "Please enter your email address.", "err");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<div class="btn-spinner"></div> Sending…';
+        hideBanner(banner);
+
+        const { error } = await db.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + "/index.html",
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = "Send Reset Link";
+
+        if (error) {
+          showBanner(banner, error.message, "err");
+        } else {
+          showBanner(banner, "✓ Reset link sent! Check your email inbox.", "ok");
+        }
+      }
+
+      // ── UI HELPERS ──
+      function showLoginView() {
+        document.getElementById("loginView").style.display = "";
+        document.getElementById("resetView").style.display = "none";
+        hideBanner(document.getElementById("loginBanner"));
+      }
+
+      function showResetView() {
+        document.getElementById("loginView").style.display = "none";
+        document.getElementById("resetView").style.display = "";
+        hideBanner(document.getElementById("resetBanner"));
+      }
+
+      function showBanner(el, msg, type) {
+        el.textContent = msg;
+        el.className = "auth-banner " + type;
+        el.style.display = "block";
+      }
+
+      function hideBanner(el) {
+        el.style.display = "none";
+      }
+
+      function togglePw(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const isText = input.type === "text";
+        input.type = isText ? "password" : "text";
+        btn.innerHTML = isText
+          ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+             </svg>`
+          : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+             </svg>`;
+      }
+
+      // Allow Enter key to submit
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          if (document.getElementById("resetView").style.display === "none" ||
+              document.getElementById("resetView").style.display === "") {
+            const resetVisible = document.getElementById("resetView").style.display !== "none";
+            if (resetVisible) handleReset();
+            else handleLogin();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
